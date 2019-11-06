@@ -10,6 +10,7 @@
 
 
 <body>
+    <div id="overlay"></div>
     <div class = "DropdownMenu">
         <input type = "checkbox" id = "menu">
         <label for = "menu"> Menu </label>
@@ -90,9 +91,32 @@
 
 
     <div class = "ButtonDiv">
-        <button type="button"> Book Spot!! </button>
+        <button class = "open-button" type="button" onclick="openForm()"> Book Spot!! </button>
     </div>
 
+    <div id="popup">
+        <h3> Your Study Spot has been booked! </h3>
+        <form action="/action_page.php" class="form-container">
+            <ul>
+                <li> <a href="#"> Book Another Spot </a> </li>
+                <li> <a href="#"> View All Bookings </a> </li>
+                <li> <a href="#"> Sign Out </a> </li>
+            </ul>
+        </form>
+    </div>
+
+
+
+    <script>
+        function openForm() {
+            document.getElementById("popup").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        function closeForm() {
+          document.getElementById("popup").style.display = "none";
+        }
+    </script>
 
 
 </body>
