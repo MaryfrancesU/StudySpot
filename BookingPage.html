@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <title>Book Study Spot</title>
     <link rel="stylesheet" type="text/css" href="BookingPageStyle.css">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='BookingPageStyle.css') }}">
+
 </head>
 
 
@@ -100,7 +102,7 @@
             <ul>
                 <li> <a href="#"> Book Another Spot </a> </li>
                 <li> <a href="#"> View All Bookings </a> </li>
-                <li> <a href="#"> Sign Out </a> </li>
+                <li> <a href="/logout"> Sign Out </a> </li>
             </ul>
         </form>
     </div>
