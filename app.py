@@ -1,12 +1,13 @@
 import os
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, flash, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
-from wtforms.validators import InputRequired, Email, Length
+from wtforms.validators import InputRequired, Email, Length, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from datetime import datetime
 
 # web stuff
 app = Flask(__name__)
@@ -16,7 +17,7 @@ Bootstrap(app)
 # database stuff
 appdir = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = \
-    f"sqlite:///{os.path.join(appdir, 'users.db')}"
+    f"sqlite:///{os.path.join(appdir, 'library.db')}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
@@ -27,11 +28,30 @@ login_manager.login_view = 'login'
 
 
 class User(UserMixin, db.Model):
+    __tablename__="Users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(15), unique=True)
-    email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(80))
+    username = db.Column(db.String(15), unique=True, nullable = False)
+    email = db.Column(db.String(50), unique=True, nullable = False)
+    password = db.Column(db.String(80), nullable = False)
+    bookings = db.relationship("Booking", backref = "User")
 
+class Spot(db.Model):
+    __tablename__="Spots"
+    spot_id = db.Column(db.Integer(), primary_key = True, autoincrement = True)
+    spot_name = db.Column(db.Unicode(64), nullable = False)
+    spot_location = db.Column(db.Unicode(64), nullable = False)
+    spot_noiselevel = db.Column(db.Integer(), nullable = False)
+    spot_food = db.Column(db.Integer(), nullable = False)
+    spot_computers = db.Column(db.Integer(), nullable = False)
+    spot_booking = db.relationship("Booking", backref = "Spot")
+
+class Booking(db.Model):
+    __tablename__="Bookings"
+    booking_id = db.Column(db.Integer(), primary_key = True, autoincrement = True)
+    #the datetime will be in format of: datetime.date(datetime.strptime("08/30/1797 16:30", '%m/%d/%Y %H:%M'))
+    booking_datetime = db.Column(db.DateTime(), nullable = False)
+    booking_user = db.Column(db.Integer(), db.ForeignKey("Users.id"))
+    booking_spot = db.Column(db.Integer(), db.ForeignKey("Spots.spot_id"))
 
 db.drop_all()
 db.create_all()
@@ -49,10 +69,26 @@ class LoginForm(FlaskForm):
 
 
 class SignUpForm(FlaskForm):
-    email = StringField('Email Address', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
-    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
-    password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
+    email = StringField('Email Address', validators=[InputRequired(message='You must have an email'), Email(message='Invalid email'), Length(max=50)])
+    def validate_email(form,self):
+        if User.query.filter_by(email = self.data).first() != None:
+            self.errors.append('an account has already been associated with this email')
+            return False
 
+        return True
+
+    emailConfirm = StringField('Confirm Email', validators=[InputRequired(message='This field cannot be empty'), Email(message='Invalid email'), EqualTo('email', message='emails need to match')])
+
+    username = StringField('Username', validators=[InputRequired(message='You must have a username'), Length(min=4, max=15, message='Invalid username')])
+    def validate_username(form,self):
+        if User.query.filter_by(username = self.data).first() != None:
+            self.errors.append('username already exists')
+            return False
+        
+        return True
+
+    password = PasswordField('Password', validators=[InputRequired(message='This field cannot be empty'), Length(min=8, max=80,message='Invalid password')])
+    passwordConfirm = PasswordField('Confirm Password', validators=[InputRequired(message='This field cannot be empty'), Length(min=8,max=80, message ='Invalid password'), EqualTo('password', message='passwords need to match')])
 
 @app.route('/')
 def home():
@@ -70,10 +106,10 @@ def login():
                 login_user(user, remember=form.remember.data)
                 return redirect(url_for('dashboard'))
 
-        return '<h1>Invalid username or password</h1>'
+        flash('Incorrect password or username')
+        return redirect(url_for('login'))
 
     return render_template('SignInPage.html', form=form)
-
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -84,8 +120,8 @@ def signup():
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
-
-        return '<h1>New user has been created!</h1>'
+        flash('New user has been created. You can log in now')
+        return redirect(url_for('login'))
         # return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
 
     return render_template('SignUpPage.html', form=form)
@@ -104,6 +140,18 @@ def logout():
     return redirect(url_for('home'))
 
 
+
+# [[ Create and Add Example Data ]]
+user1 = User(username="userperson", email="person@example.com", password="superhashedlikesomuch")
+spot1 = Spot(spot_name="spot1", spot_location="gleason", spot_noiselevel=0, spot_food=0, spot_computers=0)
+booking1 = Booking(booking_datetime= datetime.date(datetime.strptime("1797-12-30_06:30", "%Y-%m-%d_%I:%M")), booking_user=1, booking_spot=1)
+
+# add all of these items to the database session
+db.session.add_all([user1])
+db.session.add_all([spot1])
+db.session.add_all([booking1])
+
+#commit database changes
 db.session.commit()
 
 if __name__ == '__main__':

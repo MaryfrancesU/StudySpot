@@ -42,7 +42,7 @@ input:checked ~ .MenuContent {
 .MainTableDiv {
     width:700px;
     margin: auto;
-    #border: 3px solid #40E0D0;
+    border: 3px solid #40E0D0;
 }
 
 table {
@@ -72,7 +72,7 @@ button{
     clear: both;
     padding: 25px;
     text-align: center;
-    #font-size: 70px;
+    font-size: 70px;
 }
 
 #overlay {

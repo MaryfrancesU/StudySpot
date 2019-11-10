@@ -15,9 +15,64 @@
         <form class="form-signin" method="POST" action="/signup">
             <h2 class="form-signin-heading">Sign Up</h2>
             {{ form.hidden_tag() }}
-            {{form.username.label}} <br> {{ form.username }} <br> <br>
-            {{form.email.label}} <br> {{ form.email }} <br> <br>
-            {{form.password.label}} <br> {{ form.password }} <br> <br>
+
+            <div class="flashMessage">
+                {% for message in get_flashed_messages() %}
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{message}}
+                {% endfor %}
+
+            <div class="username">
+                {{form.username.label}}<br> {{ form.username }} <br> <br>
+                {% if form.username.errors %}
+                    <ul class=errors>
+                        {% for error in form.username.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="email">
+                {{form.email.label}}<br> {{ form.email }} <br> <br>
+                {% if form.email.errors %}
+                    <ul class=errors>
+                        {% for error in form.email.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {{form.emailConfirm.label}} <br> {{ form.emailConfirm }} <br> <br>
+                {% if form.emailConfirm.errors %}
+                    <ul class=errors>
+                        {% for error in form.emailConfirm.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="password">
+                {{form.password.label}} <br> {{ form.password }} <br> <br>
+                {% if form.password.errors %}
+                    <ul class=errors>
+                        {% for error in form.password.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {{form.passwordConfirm.label}} <br> {{ form.passwordConfirm }} <br> <br>
+                {% if form.passwordConfirm.errors %}
+                    <ul class=errors>
+                        {% for error in form.passwordConfirm.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
         </form>
 
