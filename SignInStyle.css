@@ -1,0 +1,26 @@
+h1 {
+  color: Turquoise;
+  text-align: center;
+  font-size: 98px;
+}
+
+h2, label {
+  color: DarkOrchid;
+  text-align: center;
+  font-size: 25px;
+}
+
+form {
+  text-align: center;
+}
+
+input {
+  color: Turquoise;
+  font-size: 25px;
+}
+
+body {
+    margin:50px 0px; padding:0px;
+    text-align:center;
+    align:justify;
+}

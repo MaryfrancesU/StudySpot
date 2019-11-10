@@ -1,0 +1,23 @@
+
+h1 {
+  color: Turquoise;
+  text-align: center;
+  font-size: 98px;
+}
+
+h2, label {
+  color: DarkOrchid;
+  text-align: justify;
+  font-size: 25px;
+}
+
+
+input {
+  color: Turquoise;
+  font-size: 25px;
+}
+
+.button {
+  height: 25px
+  width: 100px
+}
