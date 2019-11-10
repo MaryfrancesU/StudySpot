@@ -1,0 +1,1 @@
+print('prınt bıtch')
