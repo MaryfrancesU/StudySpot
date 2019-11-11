@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='SignUpStyle.css')}}">
+
 </head>
 
 
@@ -13,7 +14,7 @@
 
     <div class="container">
         <form class="form-signin" method="POST" action="/signup">
-            <h2 class="form-signin-heading">Sign Up</h2>
+            <h1 class="form-signin-heading">Sign Up</h1>
             {{ form.hidden_tag() }}
 
             <div class="flashMessage">
@@ -21,6 +22,7 @@
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     {{message}}
                 {% endfor %}
+            </div>
 
             <div class="username">
                 {{form.username.label}}<br> {{ form.username }} <br> <br>
@@ -73,7 +75,7 @@
                 {% endif %}
             </div>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+            <button class="btn" type="submit">Sign Up</button>
         </form>
 
     </div> <!-- /container -->

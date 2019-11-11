@@ -1,13 +1,29 @@
-h1 {
-  color: Turquoise;
-  text-align: center;
-  font-size: 98px;
+body {
+    background-color: #eee;
+    margin:50px 0px;
+    padding:0px;
+    text-align:center;
+    align:justify;
 }
 
-h2, label {
+.container{
+    background-color: white;
+    width: 50%;
+    margin: auto;
+    padding: 70px 0;
+    text-align: center;
+}
+
+h1 {
+    color: Turquoise;
+    text-align: center;
+    size: 50px;
+}
+
+label {
   color: DarkOrchid;
   text-align: center;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 form {
@@ -19,8 +35,12 @@ input {
   font-size: 25px;
 }
 
-body {
-    margin:50px 0px; padding:0px;
-    text-align:center;
-    align:justify;
+.btn    {
+    background-color: Turquoise;
+    color: white;
+    font-size: 20px;
+    align-content: center;
+    padding: 10px 32px;
+    border-radius: 12px;
+    border: 2px solid DarkOrchid;
 }
