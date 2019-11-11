@@ -1,0 +1,14 @@
+body   {
+    background-image: linear-gradient(to right, Turquoise , DarkOrchid);
+}
+
+#container{
+}
+
+h1 {
+    font-family: Brush Script MT, Brush Script Std, cursive ;
+    font-size: 80px;
+}
+
+/* HOW TO DO SLIDESHOW
+    https://www.w3schools.com/w3css/w3css_slideshow.asp*/
