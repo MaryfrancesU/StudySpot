@@ -1,3 +1,4 @@
+<!-- useful link: https://www.datasciencelearner.com/python-ajax-json-request-form-flask/ -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,11 +6,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Book Study Spot</title>
-    <link rel="stylesheet" type="text/css" href="BookingPageStyle.css">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='BookingPageStyle.css') }}">
+    <!-- <link rel="stylesheet" type="text/css" href="BookingPageStyle.css">-->
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='BookingPageStyle.css') }}"> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type = "text/javascript" src = "{{ url_for('static',filename='booking.js') }}"> </script>
+    <script type="text/javascript">
+        // attach listeners
+        $(document).ready(function() {
 
+            // attach a listener to the comment button which submits a 
+            // POST request with AJAX to save the comment
+            $("#dateCalender").submit(thinghappened);
+        });
+    </script>
 </head>
-
 
 <body>
     <div id="overlay"></div>
@@ -29,22 +39,15 @@
 
 
     <h2>
-        <div class = "TimeDiv" align = "center">
-            <form action="/action_page.php">
-                Select Date: <input type="date" name="date">
-                Start Time: <input type = "time" name = "stime">
-                End Time: <input type = "time" name = "etime">
-                <!-- <input type="submit"> -->
-            </form>
-
-            <!-- <form action = "/action_page.php" >
-                Start Time: <input type = "time" name = "stime">
-            </form>
-
-            <form action = "/action_page.php" >
-                End Time: <input type = "time" name = "etime">
-            </form> -->
-        </div>
+        <form class = "form-in" action="/action_page.php"></form>
+            <div class = "form-group" align = "center">
+                Select Date: <input type="date" id="dateCalender">
+                Start Time: <input type = "time" id = "starttime">
+                End Time: <input type = "time" id = "endtime">
+                <input type="submit" class="btn btn-default">
+                <label id="output" for="checking">check</label>
+            </div>
+        </form>
     </h2>
 
 
@@ -55,19 +58,9 @@
                 <!-- Avaiable Study Spots-->
                 <form name = "spot-form">
                     <td>
-                        <input type="radio" name = "spot" > Option 1<br> <br>
-                        <input type="radio" name = "spot" > Option 2<br> <br>
-                        <input type="radio" name = "spot" > Option 3 <br> <br>
-                        <input type="radio" name = "spot" > Option 4 <br> <br>
-                        <input type="radio" name = "spot" > Option 5 <br> <br>
-                        <input type="radio" name = "spot" > Option 6 <br> <br>
-                        <input type="radio" name = "spot" > Option 7 <br> <br>
-                        <input type="radio" name = "spot" > Option 8 <br> <br>
-                        <input type="radio" name = "spot" > Option 9 <br> <br>
-                        <input type="radio" name = "spot" > Option 10 <br> <br>
-                        <input type="radio" name = "spot" > Option 11 <br> <br>
-                        <input type="radio" name = "spot" > Option 12 <br> <br>
-                        <input type="radio" name = "spot" > Option 13
+                        {% for spot in spots %}
+                            <input type="radio" name = "spot" > {{spot.spot_name}}<br> <br>                          
+                        {% endfor %}
                     </td>
 
                 </form>
