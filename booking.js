@@ -1,7 +1,6 @@
-
-function thinghappened() {
+function thinghappened(date) {
+    $("#output").text($('dateCalender').html()); 
     console.log("sat hello");
-
 };
 
 $('form').on('submit', function(event) {

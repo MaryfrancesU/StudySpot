@@ -6,17 +6,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Book Study Spot</title>
-    <!-- <link rel="stylesheet" type="text/css" href="BookingPageStyle.css">-->
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='BookingPageStyle.css') }}"> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type = "text/javascript" src = "{{ url_for('static',filename='booking.js') }}"> </script>
     <script type="text/javascript">
         // attach listeners
         $(document).ready(function() {
-
-            // attach a listener to the comment button which submits a 
-            // POST request with AJAX to save the comment
-            $("#dateCalender").submit(thinghappened);
+            // attach a listener to the inputs
+            $("#dateCalender").change(thinghappened);
         });
     </script>
 </head>
@@ -44,7 +41,6 @@
                 Select Date: <input type="date" id="dateCalender">
                 Start Time: <input type = "time" id = "starttime">
                 End Time: <input type = "time" id = "endtime">
-                <input type="submit" class="btn btn-default">
                 <label id="output" for="checking">check</label>
             </div>
         </form>

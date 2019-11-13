@@ -8,11 +8,12 @@ from wtforms.validators import InputRequired, Email, Length, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # web stuff
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Thisisstotallysecretyall!'
+app.config['SEND_FILE_MAX_AGE_DEFAULT']=timedelta(seconds=1)
 Bootstrap(app)
 
 # database stuff
@@ -158,7 +159,7 @@ spot2 = Spot(spot_name="spot2", spot_location="Q&i", spot_noiselevel=1, spot_foo
 spot3 = Spot(spot_name="spot3", spot_location="iZone", spot_noiselevel=5, spot_food=1, spot_computers=0)
 spot4 = Spot(spot_name="spot4", spot_location="RR", spot_noiselevel=0, spot_food=0, spot_computers=0)
 
-booking1 = Booking(booking_datetime= datetime.date(datetime.strptime("1797-12-30_06:30", "%Y-%m-%d_%H:%M")), booking_user=1, booking_spot=1)
+booking1 = Booking(booking_datetime= datetime.strptime("1797-12-30_06:30", "%Y-%m-%d_%H:%M"), booking_user=1, booking_spot=1)
 
 # add all of these items to the database session
 db.session.add_all([user1])
