@@ -1,4 +1,4 @@
-import os    
+import os
 import time
 from flask import Flask, flash, render_template, redirect, url_for, request, jsonify
 from flask_bootstrap import Bootstrap
@@ -8,12 +8,11 @@ from wtforms.validators import InputRequired, Email, Length, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from datetime import datetime, timedelta
+from datetime import datetime
 
 # web stuff
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Thisisstotallysecretyall!'
-app.config['SEND_FILE_MAX_AGE_DEFAULT']=timedelta(seconds=1)
 Bootstrap(app)
 
 # database stuff
@@ -86,7 +85,7 @@ class SignUpForm(FlaskForm):
         if User.query.filter_by(username = self.data).first() != None:
             self.errors.append('username already exists')
             return False
-        
+
         return True
 
     password = PasswordField('Password', validators=[InputRequired(message='This field cannot be empty'), Length(min=8, max=80,message='Invalid password')])
@@ -150,7 +149,9 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-
+@app.route('/explore-libraries')
+def explore():
+    return render_template('ExploreLibraries.html')
 
 # [[ Create and Add Example Data ]]
 user1 = User(username="userperson", email="person@example.com", password="sha256$vhSHEyRj$21e523d553832ce4f3a4639164cb190e0866bff73380870995f67f32e888da49")
@@ -159,7 +160,7 @@ spot2 = Spot(spot_name="spot2", spot_location="Q&i", spot_noiselevel=1, spot_foo
 spot3 = Spot(spot_name="spot3", spot_location="iZone", spot_noiselevel=5, spot_food=1, spot_computers=0)
 spot4 = Spot(spot_name="spot4", spot_location="RR", spot_noiselevel=0, spot_food=0, spot_computers=0)
 
-booking1 = Booking(booking_datetime= datetime.strptime("1797-12-30_06:30", "%Y-%m-%d_%H:%M"), booking_user=1, booking_spot=1)
+booking1 = Booking(booking_datetime= datetime.date(datetime.strptime("1797-12-30_06:30", "%Y-%m-%d_%H:%M")), booking_user=1, booking_spot=1)
 
 # add all of these items to the database session
 db.session.add_all([user1])
