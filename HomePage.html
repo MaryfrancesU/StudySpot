@@ -11,19 +11,86 @@
 
 
 <body>
-<div id="container">
-    <h1 style="text-align: center"> Welcome to Study Spot! </h1>
-    <h4 style="text-align: center"> I promise this'll look prettier later. </h4>
 
-    <a href = "/login">
-		<button type="button"> Log In </button>
-    </a>
-    <a href = "/signup">
-		<button type="button"> Sign Up </button>
-    </a>
-</div>
+    <img src="/static/logo.png" class = "img-fluid mx-auto my-auto">
+
+    <div id = "header">
+        <h1 style="text-align: center"> Welcome to Study Spot! </h1> <br>
+        <h4 style="text-align: center"> Studying has never been smoother. </h4>
+
+        <img class = "rounded" src="/static/rando.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 55%;">
+
+        <div class = "text-center">
+            <a href = "/login">
+                <button type="button"> Log In </button>
+            </a>
+
+            <a href = "/signup">
+		        <button type="button"> Sign Up </button>
+            </a>
+
+            <a href = "/#">
+		        <button type="button"> Explore Libraries </button>
+            </a>
+        </div>
+    </div>
+
+
+    <div class ="container-fluid">
+
+        <!-- Row 1 -->
+        <div class = "row mt-lg-4 mb-lg-4 mr-lg-4 ml-lg-4" id = "intro-card">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            <br> Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+        </div>
+
+        <!-- Row 2 -->
+        <div class = "row" id = "imrow1">
+            <div class="col-lg-6">
+				<img src="/static/beach.jpg" class = "img-fluid">
+			</div>
+            <div class="col-lg-6 mx-auto my-auto">
+				Gag text. This has padding so if I keep going and just typing random stuff,
+                it'll eventually go to the next line. Yay.
+			</div>
+
+        </div>
+
+        <!-- Row 3 -->
+        <div class = "row" id = "imrow4">
+             <div class="col-lg-6 mx-auto my-auto">
+				Gag text. This has padding so if I keep going and just typing random stuff,
+                 it'll eventually go to the next line. Yay.
+			</div>
+
+			<div class="col-lg-6">
+				<img src="/static/dog.jpg" class = "img-fluid mt-lg-4 mb-lg-4">
+			</div>
+
+        </div>
+
+        <!-- Row 4 -->
+        <div class = "row" id = "logo-row">
+
+            <div class="col-lg-6 mx-auto my-auto">
+                <h4 style="text-align: center"> Studying has never been smoother. </h4>
+				 <!-- <img src="/static/logo.png" class = "img-fluid"> -->
+			</div>
+
+        </div>
+
+
+    </div> <!-- end of container -->
+
 
     <!-- Have footer will links -->
+    <div id = "footer">
+        I'm some lonely text. <br>
+        Don't mind me. <br>
+        It's not like I have feelings. <br>
+        <br> <br> <br>
+    </div>
+
 
     <!-- Bootstrap stuff - DON'T TOUCH -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
