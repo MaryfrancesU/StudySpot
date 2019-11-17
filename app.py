@@ -64,13 +64,13 @@ def load_user(user_id):
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
-    password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
+    username = StringField('Username', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
     remember = BooleanField('Remember Me')
 
 
 class SignUpForm(FlaskForm):
-    email = StringField('Email Address', validators=[InputRequired(message='You must have an email'), Email(message='Invalid email'), Length(max=50)])
+    email = StringField('Email Address', validators=[InputRequired(message='You must have an email'), Email(message='Invalid email'), Length(max=50, message='too long')])
     def validate_email(form,self):
         if User.query.filter_by(email = self.data).first() != None:
             self.errors.append('an account has already been associated with this email')
