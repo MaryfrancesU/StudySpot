@@ -1,6 +1,36 @@
 function thinghappened(date) {
-    $("#output").text($('dateCalender').html()); 
+    $("#output").text($('dateCalender').html());
     console.log("sat hello");
+};
+
+function resetOptions(newOptions) {
+    var currOptions = $('spot-form');
+
+    for(let opt of newOptions) {
+        var o = document.createElement("radio");
+        o.className = "spot";
+        o.textContent=opt.name;
+        currOptions.append(o);
+    }
+}
+
+function changepref() {
+    $.ajax({
+	  "url": "localhost:5000/booking",
+        "data": {
+	      "date": $('dateCalender').html(),
+        // "time":
+        // "pref" : {
+	    //   "dummy": "sampletest",
+        // },
+        },
+	  "type": "POST",
+	  "dataType": "json"
+	}).done(function (response){
+
+
+	});
+
 };
 
 $('form').on('submit', function(event) {
@@ -16,10 +46,10 @@ $.ajax({
     $('#output').text(data.output).show();
 })
 .fail(function(xhr, status, description){
-    console.log("Error: " + description); 
+    console.log("Error: " + description);
 })
 .always(function(xhr, status) {
-    console.log("request complete w/ status: "+status); 
+    console.log("request complete w/ status: "+status);
 });
 event.preventDefault();
 });
