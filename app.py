@@ -231,9 +231,29 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+
 @app.route('/explore-libraries')
 def explore():
     return render_template('ExploreLibraries.html')
+
+
+@app.route('/view-bookings')
+def bookings():
+    return render_template('ViewBookings.html')
+
+
+@app.route('/view-profile')
+@login_required
+def viewProfile():
+    user = current_user
+    return render_template('UserProfile.html', user=user)
+
+
+@app.route('/edit-profile')
+def editProfile():
+    user = current_user
+    return render_template('EditProfile.html', user=user)
+
 
 # [[ Create and Add Example Data ]]
 user1 = User(username="userperson", email="person@example.com", password="sha256$vhSHEyRj$21e523d553832ce4f3a4639164cb190e0866bff73380870995f67f32e888da49")
