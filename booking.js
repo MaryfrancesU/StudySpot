@@ -16,7 +16,7 @@ function resetOptions(newOptions) {
 
 function changepref() {
     $.ajax({
-	  "url": "localhost:5000/booking",
+	  "url": "localhost:5000/selection", //change from booking to selection
         "data": {
 	      "date": $('dateCalender').html(),
         // "time":
