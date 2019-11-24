@@ -1,5 +1,5 @@
 function thinghappened(date) {
-    $("#output").text($('dateCalender').html());
+    $("#output").text($('dateCalender').html()); //maybe it's dateCalendar?
     console.log("sat hello");
 };
 
