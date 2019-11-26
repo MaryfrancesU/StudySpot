@@ -200,7 +200,7 @@ def selection():
 
     # return the list of avilible spots
     return jsonify({
-        'availiblespots': prefSpots
+        'availablespots': prefSpots
     }), 200
 
 
