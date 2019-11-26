@@ -17,13 +17,13 @@ function changepref() {
 	  "url": "localhost:5000/selection", //change from booking to selection
         "data": {
 	      "date": $('dateCalender').html(),
-		"food" : $('foodfilter').prop('checked');
-		"quiet": $('quietfilter').prop('checked');
-		
-        // "time":
-        // "pref" : {
-	    //   "dummy": "sampletest",
-        // },
+		"stime": $('starttime').html(),
+		"etime": $('endtime').html(),
+		"food" : $('foodfilter').prop('checked'),
+		"quiet": $('quietfilter').prop('checked'),
+		"whisper": $('whisperfilter').prop('checked'),
+		"comp": $('compfilter').prop('checked'),
+	
         },
 	  "type": "POST",
 	  "dataType": "json"
