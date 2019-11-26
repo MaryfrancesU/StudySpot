@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>View Bookings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='ViewBookings.css')}}">
+
+  </head>
+
+  <body>
+      <h1> Welcome, {{user.username}}! </h1>
+      <div class="container-fluid">
+          <img src="/static/logo.png" style="display: block; margin-left: auto; margin-right: auto;">
+      </div>
+
+      <h2> Your upcoming appointments are: </h2>
+
+      <div class = "MainTableDiv">
+          <table style = "float: right" class = "mytable">
+              <tbody>
+              <tr>
+                  <!-- Avaiable Study Spots-->
+
+                    <td>
+                        {% for booking in bookings %}
+                            <input type="radio" name = "spot" > {{booking.booking_spot}}<br> <br>
+                        {% endfor %}
+                    </td>
+
+
+              </tr>
+              </tbody>
+          </table>
+
+      </div>
+
+  </body>
+
+</html>
