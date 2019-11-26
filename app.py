@@ -178,11 +178,13 @@ def explore():
 def selection(pref):
     location = pref.get('datetimelocation')
     #first get all spots that have the specified characteristsics
-    prefSpots = list()
-    allSpots = Spot.query.all()
-    for sp in allSpots:
-        if sp.location in location:
-            prefSpots.append(sp.spot_id)
+#     prefSpots = list()
+#     allSpots = Spot.query.all()
+#     for sp in allSpots:
+#         if sp.location in location:
+#             prefSpots.append(sp.spot_id)
+
+
 
     # check each booking in the table and see if each spot in the list already
     # has a reservation at the specificed time and remove from list
