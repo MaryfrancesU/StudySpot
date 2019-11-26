@@ -177,12 +177,10 @@ def explore():
 @login_required
 def selection(pref):
     location = pref.get('datetimelocation')
+    foodchoice = pref.get('food')
+    
     #first get all spots that have the specified characteristsics
-#     prefSpots = list()
-#     allSpots = Spot.query.all()
-#     for sp in allSpots:
-#         if sp.location in location:
-#             prefSpots.append(sp.spot_id)
+    prefSpots = Spot.query.filter_by(spot_location=location, spot_food=foodchoice)
 
 
 
