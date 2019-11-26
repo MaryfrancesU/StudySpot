@@ -17,7 +17,9 @@ function changepref() {
 	  "url": "localhost:5000/selection", //change from booking to selection
         "data": {
 	      "date": $('dateCalender').html(),
-		"food" : $('foodfilter').is(':checked'),
+		"food" : $('foodfilter').prop('checked');
+		"silence": $('silencefilter').prop('checked');
+		
         // "time":
         // "pref" : {
 	    //   "dummy": "sampletest",
