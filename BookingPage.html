@@ -56,13 +56,16 @@
             <tbody>
             <tr>
                 <!-- Avaiable Study Spots-->
-                <form name = "spot-form" id="formspotcontainer">
-                    <td>
+                <form name = "spot-form" >
+                    
+                    <div id="formspotcontainer">
+<!--                     changing from td (table) to a div -->
+<!--                     <td> -->
                         {% for spot in spots %}
                             <input type="radio" name = "spot" > {{spot.spot_name}}<br> <br>                          
                         {% endfor %}
-                    </td>
-
+<!--                     </td> -->
+                    </div>
                 </form>
             </tr>
             </tbody>
@@ -76,8 +79,8 @@
                         <!-- Added ids. May affect the CSS (hopefully not)  -->
                         <input type="checkbox" name = "filter" id = "quietFilter"> Quiet (no talking) <br> <br>
                         <input type="checkbox" name = "filter" id = "whisperFilter"> Quiet (whisper level) <br> <br>
-                        <input type="checkbox" name = "filter" id = "foodFilter"> Food Allowed <br> <br>
-                        <input type="checkbox" name = "filter" id = "compFilter"> Computers Available
+                        <input type="checkbox" name = "filter" id = "foodFilter" checked> Food Allowed <br> <br>
+                        <input type="checkbox" name = "filter" id = "compFilter" checked> Computers Available
                     </td>
                 </form>
             </tr>
