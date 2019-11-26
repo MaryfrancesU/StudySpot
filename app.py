@@ -255,6 +255,34 @@ def editProfile():
     return render_template('EditProfile.html', user=user)
 
 
+@app.route('/selection', methods=['POST'])
+@login_required
+def selection(pref):
+    location = pref.get('datetimelocation')
+    #first get all spots that have the specified characteristsics
+#     prefSpots = list()
+#     allSpots = Spot.query.all()
+#     for sp in allSpots:
+#         if sp.location in location:
+#             prefSpots.append(sp.spot_id)
+
+
+
+    # check each booking in the table and see if each spot in the list already
+    # has a reservation at the specificed time and remove from list
+    dt = datetime.datetime.combine(pref.get('date'), pref.get('time'))
+    allBookings = Booking.query.all()
+    for bk in allBookings:
+        if bk.booking_spot in prefSpots and bk.booking_datetime <= dt < bk.booking_datetime + timedelta(hours=2):
+            prefSpots.remove(bk.booking_spot)
+
+    # return the list of avilible spots
+    return jsonify({
+        'availiblespots': prefSpots
+    }), 200
+
+
+
 # [[ Create and Add Example Data ]]
 user1 = User(username="userperson", email="person@example.com", password="sha256$vhSHEyRj$21e523d553832ce4f3a4639164cb190e0866bff73380870995f67f32e888da49")
 spot1 = Spot(spot_name="spot1", spot_location="gleason", spot_noiselevel=0, spot_food=0, spot_computers=0)
