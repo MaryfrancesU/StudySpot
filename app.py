@@ -195,7 +195,8 @@ def selection():
    
     for bk in currBooking:
         if ((bk.booking_startdatetime <= startdt and startdt <= bk.booking_enddatetime) or (endt >= bk.booking_startdatetime and endt <= bk.booking_enddatetime)):
-            prefSpots.remove(bk.booking_spot)
+            prefSpots.remove(Spot.query.filter_by(spot_id == bk.booking_spot).first())
+            
 
     # return the list of avilible spots
     return jsonify({
