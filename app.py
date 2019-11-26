@@ -280,8 +280,26 @@ def editProfile():
         return redirect(url_for('editProfile'))
 
     return render_template('EditProfile.html', user=user, form=form))
+    
+
+# send profile change alert to old email
+def emailEditEmail(email, username, newemail):
+    message = Message('PROFILE CHANGE CONFIRMATION - STUDY SPOT', sender='urstudyspot@gmail.com', recipients=[email])
+    message.body = "Hi " + username + " from StudySpot! " \
+                                      "We're just sending this email to let you know that your StudySpot email " \
+                                      "has been changed to " + newemail + "!"
+    mail.send(message)
 
 
+# send profile change alert to old email
+def passwordEditEmail(email, username):
+    message = Message('PROFILE CHANGE CONFIRMATION - STUDY SPOT', sender='urstudyspot@gmail.com', recipients=[email])
+    message.body = "Hi " + username + " from StudySpot! " \
+                                      "We're just sending this email to let you know that your StudySpot password " \
+                                      "has been updated!"
+    mail.send(message)
+
+    
 # [[ Create and Add Example Data ]]
 user1 = User(username="userperson", email="person@example.com", password="sha256$vhSHEyRj$21e523d553832ce4f3a4639164cb190e0866bff73380870995f67f32e888da49")
 spot1 = Spot(spot_name="spot1", spot_location="gleason", spot_noiselevel=0, spot_food=0, spot_computers=0)
