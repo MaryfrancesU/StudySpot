@@ -18,7 +18,7 @@ function changepref() {
         "data": {
 	      "date": $('dateCalender').html(),
 		"food" : $('foodfilter').prop('checked');
-		"silence": $('silencefilter').prop('checked');
+		"quiet": $('quietfilter').prop('checked');
 		
         // "time":
         // "pref" : {
