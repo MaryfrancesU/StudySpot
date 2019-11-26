@@ -14,6 +14,10 @@
         $(document).ready(function() {
             // attach a listener to the inputs
             $("#dateCalender").change(thinghappened);
+             $("#quietFilter").change(thinghappened);
+             $("#whisperFilter").change(thinghappened);
+             $("#foodFilter").change(thinghappened);
+             $("#compFilter").change(thinghappened);
         });
     </script>
 </head>
@@ -52,7 +56,7 @@
             <tbody>
             <tr>
                 <!-- Avaiable Study Spots-->
-                <form name = "spot-form">
+                <form name = "spot-form" id="formspotcontainer">
                     <td>
                         {% for spot in spots %}
                             <input type="radio" name = "spot" > {{spot.spot_name}}<br> <br>                          
@@ -69,13 +73,12 @@
                 <!-- Filter Results -->
                 <form name = "filter-form">
                     <td>
-<!--                          Need to change the names. May affect the CSS (hopefully not)  -->
-                        <input type="checkbox" name = "filter"> Quiet (no talking) <br> <br>
-                        <input type="checkbox" name = "filter"> Quiet (whisper level) <br> <br>
-                        <input type="checkbox" name = "filter"> Food Allowed <br> <br>
-                        <input type="checkbox" name = "filter"> Computers Available
+                        <!-- Added ids. May affect the CSS (hopefully not)  -->
+                        <input type="checkbox" name = "filter" id = "quietFilter"> Quiet (no talking) <br> <br>
+                        <input type="checkbox" name = "filter" id = "whisperFilter"> Quiet (whisper level) <br> <br>
+                        <input type="checkbox" name = "filter" id = "foodFilter"> Food Allowed <br> <br>
+                        <input type="checkbox" name = "filter" id = "compFilter"> Computers Available
                     </td>
-
                 </form>
             </tr>
         </table>
