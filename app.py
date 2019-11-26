@@ -161,6 +161,7 @@ def sendEmail(email,username):
     message.body = "Hi {}! Welcome to study spot.Please click the link to confirm your e-mail to have login access. Your link is {}".format(username,confirm_link)
     mail.send(message)
 
+    
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignUpForm()
@@ -182,6 +183,7 @@ def signup():
     	
     return render_template('SignUpPage.html', form=form)
 
+
 #email confirmation route
 @app.route('/email_confrmation/<token>')
 def email_confirmation(token):
@@ -197,6 +199,7 @@ def email_confirmation(token):
         return redirect(url_for('resendconfirmation'))
     
     return redirect(url_for('login'))
+
 
 #email confirmation resent link route
 @app.route('/resend-confirmation', methods=['GET','POST'])
@@ -219,12 +222,8 @@ def resendconfirmation():
 @app.route('/book')
 @login_required
 def dashboard():
-    # date = request.form['date']
-    # print(date)
-
-    # localtime = time.localtime(time.time())
     spots = Spot.query.all()
-    return render_template('BookingPage.html',spots=spots)
+    return render_template('BookingPage.html', spots=spots)
 
 
 @app.route('/logout')
@@ -240,6 +239,7 @@ def explore():
 
 
 @app.route('/view-bookings')
+@login_required
 def bookings():
     return render_template('ViewBookings.html')
 
@@ -251,10 +251,35 @@ def viewProfile():
     return render_template('UserProfile.html', user=user)
 
 
-@app.route('/edit-profile')
+@app.route('/edit-profile', methods=['GET', 'POST'])
+@login_required
 def editProfile():
+    form = EditProfileForm()
     user = current_user
-    return render_template('EditProfile.html', user=user)
+
+    if form.validate_on_submit():
+        if user:
+            if check_password_hash(user.password, form.cpassword.data):
+
+                # update user
+                newem = form.email.data
+                newpa = form.password.data
+                if newem != '':
+                    user.email = newem
+                if newpa != '':
+                    hashed_password = generate_password_hash(form.password.data, method='sha256')
+                    user.password = hashed_password
+
+                db.session.commit()
+
+                # go back to view profile
+                return redirect(url_for('viewProfile'))
+
+    if request.method == 'POST' and not check_password_hash(user.password, form.cpassword.data):
+        flash('Incorrect password. Please enter your current password to continue.')
+        return redirect(url_for('editProfile'))
+
+    return render_template('EditProfile.html', user=user, form=form))
 
 
 # [[ Create and Add Example Data ]]
@@ -266,6 +291,7 @@ spot4 = Spot(spot_name="spot4", spot_location="RR", spot_noiselevel=0, spot_food
 
 booking1 = Booking(booking_datetime= datetime.date(datetime.strptime("1797-12-30_06:30", "%Y-%m-%d_%H:%M")), booking_user=1, booking_spot=1)
 
+
 # add all of these items to the database session
 db.session.add_all([user1])
 db.session.add_all([spot1, spot2, spot3, spot4])
@@ -273,6 +299,7 @@ db.session.add_all([booking1])
 
 #commit database changes
 db.session.commit()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
