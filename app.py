@@ -174,8 +174,9 @@ def explore():
     return render_template('ExploreLibraries.html')
 
 @app.route('/selection', methods=['POST'])
-@login_required
-def selection(pref):
+@login_required #double-check if it breaks something
+def selection():
+    body = request.form.get("date") #dictionary
     location = pref.get('datetimelocation')
     foodchoice = pref.get('food')
     
