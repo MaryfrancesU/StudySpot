@@ -8,14 +8,18 @@ from wtforms.validators import InputRequired, Email, Length, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from datetime import datetime
+from datetime import datetime, timedelta
+from flask_httpauth import HTTPBasicAuth
 from flask_mail import Mail,Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+
 
 # web stuff
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Thisisstotallysecretyall!'
 Bootstrap(app)
+auth = HTTPBasicAuth()
+
 
 # database stuff
 appdir = os.path.abspath(os.path.dirname(__file__))
@@ -23,6 +27,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = \
     'sqlite:///'+ os.path.join(appdir, 'library.db')
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+
 
 #config values for the mail   
 app.config.update(
@@ -33,11 +38,12 @@ app.config.update(
     MAIL_USERNAME='urstudyspot@gmail.com',
     MAIL_PASSWORD='study1/spot'
     )
-
 mail = Mail(app)
+
 
 #serializer for the confirmation email token 
 serial = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
 
 # login stuff
 login_manager = LoginManager()
@@ -65,6 +71,7 @@ class Spot(db.Model):
     spot_computers = db.Column(db.Integer(), nullable = False)
     spot_booking = db.relationship("Booking", backref = "Spot")
 
+    
 class Booking(db.Model):
     __tablename__="Bookings"
     booking_id = db.Column(db.Integer(), primary_key = True, autoincrement = True)
@@ -120,12 +127,6 @@ class ResendConfirmationForm(FlaskForm):
 
         return True
 
-
-
-
-# class BookingForm(FlaskForm):
-#     date = DateField()
-#     starttime = TimeField
 
 @app.route('/')
 def home():
