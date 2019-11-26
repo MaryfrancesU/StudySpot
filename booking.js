@@ -4,13 +4,11 @@ function thinghappened(date) {
 };
 
 function resetOptions(newOptions) {
-    var currOptions = $('spot-form');
+    var currOptions = $("#formspotcontainer");
+    $("#formspotcontainer").empty();
 
     for(let opt of newOptions) {
-        var o = document.createElement("radio");
-        o.className = "spot";
-        o.textContent=opt.name;
-        currOptions.append(o);
+	$('<input type="radio" name=opt.name />').appendTo("#formspotcontainer");
     }
 }
 
