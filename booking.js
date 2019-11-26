@@ -9,7 +9,7 @@ function resetOptions(newOptions) {
 
     for(let opt of newOptions) {
 	$('<input type="radio" name=opt.name />').appendTo("#formspotcontainer");
-    }
+    } /* it is not creating new input types */
 }
 
 function changepref() {
