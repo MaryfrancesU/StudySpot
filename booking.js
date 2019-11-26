@@ -1,5 +1,5 @@
 function thinghappened(date) {
-    $("#output").text($('dateCalender').html()); //maybe it's dateCalendar?
+    $("#output").text($('dateCalender').html()); 
     console.log("sat hello");
 };
 
@@ -7,10 +7,7 @@ function resetOptions(newOptions) {
     var currOptions = $('spot-form');
 
     for(let opt of newOptions) {
-        var o = document.createElement("radio");
-        o.className = "spot";
-        o.textContent=opt.name;
-        currOptions.append(o);
+	$('<input type="radio" name=opt.name />').appendTo('formspotcontainer');
     }
 }
 
@@ -19,6 +16,7 @@ function changepref() {
 	  "url": "localhost:5000/selection", //change from booking to selection
         "data": {
 	      "date": $('dateCalender').html(),
+		"food" : $('foodfilter').is(':checked'),
         // "time":
         // "pref" : {
 	    //   "dummy": "sampletest",
