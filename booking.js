@@ -4,10 +4,11 @@ function thinghappened(date) {
 };
 
 function resetOptions(newOptions) {
-    var currOptions = $('spot-form');
+    var currOptions = $("#formspotcontainer");
+    $("#formspotcontainer").empty();
 
     for(let opt of newOptions) {
-	$('<input type="radio" name=opt.name />').appendTo('formspotcontainer');
+	$('<input type="radio" name=opt.name />').appendTo("#formspotcontainer");
     }
 }
 
