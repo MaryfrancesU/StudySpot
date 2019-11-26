@@ -183,8 +183,8 @@ def selection():
     foodchoice = request.form.get("food")
     compchoice=request.form.get("comp")
     
-    # first get all spots that have the specified characteristsics
-    prefSpots = list(Spot.query.filter_by(spot_food==foodchoice, spot_computers==compchoice))
+    # first get all spots that have the specified characteristsics --> Check if set syntax is good
+    prefSpots = set(Spot.query.filter_by(spot_food==foodchoice, spot_computers==compchoice))
 
     # check each booking in the table and see if each spot in the list already
     # has a reservation at the specificed time and remove from list
