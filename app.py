@@ -43,10 +43,10 @@ class Spot(db.Model):
     __tablename__ = "Spots"
     spot_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     spot_name = db.Column(db.Unicode(64), nullable=False)
-    spot_location = db.Column(db.Unicode(64), nullable=False)
+    #spot_location = db.Column(db.Unicode(64), nullable=False)
     spot_noiselevel = db.Column(db.Integer(), nullable=False)
-    spot_food = db.Column(db.Integer(), nullable=False)
-    spot_computers = db.Column(db.Integer(), nullable=False)
+    spot_food = db.Column(db.Boolean(), nullable=False)
+    spot_computers = db.Column(db.Boolean(), nullable=False)
     spot_booking = db.relationship("Booking", backref="Spot")
 
 
@@ -54,7 +54,8 @@ class Booking(db.Model):
     __tablename__ = "Bookings"
     booking_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     # the datetime will be in format of: datetime.date(datetime.strptime("08/30/1797 16:30", '%m/%d/%Y %H:%M'))
-    booking_datetime = db.Column(db.DateTime(), nullable=False)
+    booking_startdatetime = db.Column(db.DateTime(), nullable=False)
+    booking_enddatetime = db.Column(db.DateTime(), nullable=False)
     booking_user = db.Column(db.Integer(), db.ForeignKey("Users.id"))
     booking_spot = db.Column(db.Integer(), db.ForeignKey("Spots.spot_id"))
 
@@ -176,21 +177,24 @@ def explore():
 @app.route('/selection', methods=['POST'])
 @login_required #double-check if it breaks something
 def selection():
-    body = request.form.get("date") #dictionary
-    location = pref.get('datetimelocation')
-    foodchoice = pref.get('food')
+    date = request.form.get("date") #dictionary
+    stime = request.form.get("stime")    
+    etime = request.form.get("etime")
+    foodchoice = request.form.get("food")
+    compchoice=request.form.get("comp")
     
-    #first get all spots that have the specified characteristsics
-    prefSpots = Spot.query.filter_by(spot_location=location, spot_food=foodchoice)
-
-
+    # first get all spots that have the specified characteristsics
+    prefSpots = list(Spot.query.filter_by(spot_food==foodchoice, spot_computers==compchoice))
 
     # check each booking in the table and see if each spot in the list already
     # has a reservation at the specificed time and remove from list
-    dt = datetime.datetime.combine(pref.get('date'), pref.get('time'))
-    allBookings = Booking.query.all()
-    for bk in allBookings:
-        if bk.booking_spot in prefSpots and bk.booking_datetime <= dt < bk.booking_datetime + timedelta(hours=2):
+    startdt = datetime.datetime.combine(date, stime)
+    endt = datetime.datetime.combine(date, etime)
+
+    currBooking = session.query(Booking).filter(Booking.booking_spot.in_(prefSpots)).all()
+   
+    for bk in currBooking:
+        if ((bk.booking_startdatetime <= startdt and startdt <= bk.booking_enddatetime) or (endt >= bk.booking_startdatetime and endt <= bk.booking_enddatetime)):
             prefSpots.remove(bk.booking_spot)
 
     # return the list of avilible spots
@@ -206,6 +210,7 @@ def selection():
 # [[ Create and Add Example Data ]]
 user1 = User(username="userperson", email="person@example.com",
              password="sha256$vhSHEyRj$21e523d553832ce4f3a4639164cb190e0866bff73380870995f67f32e888da49")
+#CHANGE THESE BEFORE TESTING********************* specifically the location
 spot1 = Spot(spot_name="spot1", spot_location="gleason", spot_noiselevel=0, spot_food=0, spot_computers=0)
 spot2 = Spot(spot_name="spot2", spot_location="Q&i", spot_noiselevel=1, spot_food=1, spot_computers=1)
 spot3 = Spot(spot_name="spot3", spot_location="iZone", spot_noiselevel=5, spot_food=1, spot_computers=0)
