@@ -126,7 +126,13 @@ class ResendConfirmationForm(FlaskForm):
             return False
 
         return True
-
+    
+    
+class EditProfileForm(FlaskForm):
+    cpassword = PasswordField('Current Password', validators=[InputRequired(message='This field cannot be empty!')])
+    password = PasswordField('New Password')
+    email = StringField('New Email')
+    
 
 @app.route('/')
 def home():
