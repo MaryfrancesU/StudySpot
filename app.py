@@ -10,6 +10,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from datetime import datetime, timedelta
 from flask_httpauth import HTTPBasicAuth
+from marshmallow import Schema, fields
+from marshmallow_sqlalchemy import ModelSchema
 
 # web stuff
 app = Flask(__name__)
@@ -48,7 +50,17 @@ class Spot(db.Model):
     spot_food = db.Column(db.Boolean(), nullable=False)
     spot_computers = db.Column(db.Boolean(), nullable=False)
     spot_booking = db.relationship("Booking", backref="Spot")
-
+    
+class SpotSchema(Schema):
+    class Meta:
+        model=Spot
+        
+class SpotList():
+   def __init__(self):
+        self.spots = []
+    
+class SpotListSchema(Schema):
+    spots = fields.Nested(SpotSchema, only = ["spot_id",  "spot_name"],many = true)
 
 class Booking(db.Model):
     __tablename__ = "Bookings"
@@ -191,16 +203,27 @@ def selection():
     startdt = datetime.datetime.combine(date, stime)
     endt = datetime.datetime.combine(date, etime)
 
+    #gets all bookings whose spot is in the list
     currBooking = session.query(Booking).filter(Booking.booking_spot.in_(prefSpots)).all()
    
+    #goes thru all those bookings and checks if the requested time is between an already existing reservation
     for bk in currBooking:
         if ((bk.booking_startdatetime <= startdt and startdt <= bk.booking_enddatetime) or (endt >= bk.booking_startdatetime and endt <= bk.booking_enddatetime)):
             prefSpots.remove(Spot.query.filter_by(spot_id == bk.booking_spot).first())
-            
-
-    # return the list of avilible spots
+                
+    #initializes the list of spots
+    splist = SpotList()
+    
+    #adds each availible spot into the list
+    for sp in prefSpots:
+        splist.spots.append(sp)
+    
+    #serializes the list
+    result=SpotListSchema().dump(splist)
+       
+    # return the list of avilible spots in terms of JSON
     return jsonify({
-        'availablespots': prefSpots
+        'availablespots': result
     }), 200
 
 
