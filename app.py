@@ -65,7 +65,7 @@ class SpotListSchema(Schema):
 class Booking(db.Model):
     __tablename__ = "Bookings"
     booking_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    # the datetime will be in format of: datetime.date(datetime.strptime("08/30/1797 16:30", '%m/%d/%Y %H:%M'))
+    # the datetime will be in format of: datetime.strptime("08/30/1797 6:30 AM", '%m/%d/%Y %I:%M %p')
     booking_startdatetime = db.Column(db.DateTime(), nullable=False)
     booking_enddatetime = db.Column(db.DateTime(), nullable=False)
     booking_user = db.Column(db.Integer(), db.ForeignKey("Users.id"))
@@ -235,18 +235,21 @@ def selection():
 user1 = User(username="userperson", email="person@example.com",
              password="sha256$vhSHEyRj$21e523d553832ce4f3a4639164cb190e0866bff73380870995f67f32e888da49")
 #CHANGE THESE BEFORE TESTING********************* specifically the location
-spot1 = Spot(spot_name="spot1", spot_location="gleason", spot_noiselevel=0, spot_food=0, spot_computers=0)
-spot2 = Spot(spot_name="spot2", spot_location="Q&i", spot_noiselevel=1, spot_food=1, spot_computers=1)
-spot3 = Spot(spot_name="spot3", spot_location="iZone", spot_noiselevel=5, spot_food=1, spot_computers=0)
-spot4 = Spot(spot_name="spot4", spot_location="RR", spot_noiselevel=0, spot_food=0, spot_computers=0)
+spot1 = Spot(spot_name="gleason", spot_noiselevel=0, spot_food=0, spot_computers=0)
+spot2 = Spot(spot_name="Q&i", spot_noiselevel=1, spot_food=1, spot_computers=1)
+spot3 = Spot(spot_name="iZone", spot_noiselevel=5, spot_food=1, spot_computers=0)
+spot4 = Spot(spot_name="Rush Rhees", spot_noiselevel=0, spot_food=0, spot_computers=0)
 
-booking1 = Booking(booking_datetime=datetime.strptime("1797-12-30_06:30", "%Y-%m-%d_%H:%M"),
+# dt format: datetime.strptime("08/30/1797 6:30 AM", '%m/%d/%Y %I:%M %p')
+booking1 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM", "%Y-%m-%d_%I:%M %p"), booking_enddatetime=datetime.strptime("2019-11-30_08:30 AM", "%Y-%m-%d_%I:%M %p"),
                    booking_user=1, booking_spot=1)
+booking2 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM", "%Y-%m-%d_%I:%M %p"), booking_enddatetime=datetime.strptime("2019-11-30_08:30 AM", "%Y-%m-%d_%I:%M %p"),
+                   booking_user=1, booking_spot=2)
 
 # add all of these items to the database session
 db.session.add_all([user1])
 db.session.add_all([spot1, spot2, spot3, spot4])
-db.session.add_all([booking1])
+db.session.add_all([booking1, booking2])
 
 # commit database changes
 db.session.commit()
