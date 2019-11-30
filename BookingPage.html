@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Book Study Spot</title>
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='BookingPageStyle.css') }}"> 
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='BookingPageStyle.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type = "text/javascript" src = "{{ url_for('static',filename='booking.js') }}"> </script>
     <script type="text/javascript">
@@ -17,15 +17,14 @@
             $("#dateCalender").change(changepref);
             $("#starttime").change(changepref);
             $("#endtime").change(changepref);
-            
-            //test if this works too            
+
+            //test if this works too
             //$("checkbox[name ='filter']").change(changepref);
-            
+
             $("#quietfilter").change(changepref);
             $("#whisperfilter").change(changepref);
             $("#foodfilter").change(changepref);
             $("#compfilter").change(changepref);
-
         });
     </script>
 </head>
@@ -53,7 +52,7 @@
                 Select Date: <input type="date" id="dateCalender">
                 Start Time: <input type = "time" id = "starttime">
                 End Time: <input type = "time" id = "endtime">
-                <label id="output" for="checking">check</label>
+                <label id="output" form="checking">check</label>
             </div>
         </form>
     </h2>
@@ -67,7 +66,7 @@
                 <form name = "spot-form">
                     <td>
                         {% for spot in spots %}
-                            <input type="radio" name = "spot" > {{spot.spot_name}}<br> <br>                          
+                            <input type="radio" name = "spot" > {{spot.spot_name}}<br> <br>
                         {% endfor %}
                     </td>
 
@@ -115,7 +114,6 @@
             document.getElementById("popup").style.display = "block";
             document.getElementById("overlay").style.display = "block";
         }
-
         function closeForm() {
           document.getElementById("popup").style.display = "none";
         }

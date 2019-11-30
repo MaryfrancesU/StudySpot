@@ -1,5 +1,4 @@
 import os
-import time
 from flask import Flask, flash, render_template, redirect, url_for, request, jsonify
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
@@ -11,7 +10,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from datetime import datetime, timedelta
 from flask_httpauth import HTTPBasicAuth
 from marshmallow import Schema, fields
-from marshmallow_sqlalchemy import ModelSchema
+# from marshmallow_sqlalchemy import ModelSchema
 
 # web stuff
 app = Flask(__name__)
@@ -45,22 +44,26 @@ class Spot(db.Model):
     __tablename__ = "Spots"
     spot_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     spot_name = db.Column(db.Unicode(64), nullable=False)
-    #spot_location = db.Column(db.Unicode(64), nullable=False)
+    # spot_location = db.Column(db.Unicode(64), nullable=False)
     spot_noiselevel = db.Column(db.Integer(), nullable=False)
     spot_food = db.Column(db.Boolean(), nullable=False)
     spot_computers = db.Column(db.Boolean(), nullable=False)
     spot_booking = db.relationship("Booking", backref="Spot")
-    
+
+
 class SpotSchema(Schema):
     class Meta:
-        model=Spot
-        
+        model = Spot
+
+
 class SpotList():
-   def __init__(self):
+    def __init__(self):
         self.spots = []
-    
+
+
 class SpotListSchema(Schema):
-    spots = fields.Nested(SpotSchema, only = ["spot_id",  "spot_name"],many = true)
+    spots = fields.Nested(SpotSchema, only=["spot_id", "spot_name"], many=True)
+
 
 class Booking(db.Model):
     __tablename__ = "Bookings"
@@ -186,64 +189,64 @@ def logout():
 def explore():
     return render_template('ExploreLibraries.html')
 
+
 @app.route('/selection', methods=['POST'])
-@login_required #double-check if it breaks something
+@login_required  # double-check if it breaks something
 def selection():
-    date = request.form.get("date") #dictionary
-    stime = request.form.get("stime")    
+    print("The request is sent")
+    date = request.form.get("date")  # dictionary
+    stime = request.form.get("stime")
     etime = request.form.get("etime")
     foodchoice = request.form.get("food")
-    compchoice=request.form.get("comp")
-    
+    compchoice = request.form.get("comp")
+
     # first get all spots that have the specified characteristsics --> Check if set syntax is good
-    prefSpots = set(Spot.query.filter_by(spot_food==foodchoice, spot_computers==compchoice))
+    prefSpots = set(Spot.query.filter_by(spot_food=foodchoice, spot_computers=compchoice))
 
     # check each booking in the table and see if each spot in the list already
     # has a reservation at the specificed time and remove from list
     startdt = datetime.datetime.combine(date, stime)
     endt = datetime.datetime.combine(date, etime)
 
-    #gets all bookings whose spot is in the list
-    currBooking = session.query(Booking).filter(Booking.booking_spot.in_(prefSpots)).all()
-   
-    #goes thru all those bookings and checks if the requested time is between an already existing reservation
+    # gets all bookings whose spot is in the list
+    currBooking = Booking.query.filter(Booking.booking_spot.in_(prefSpots)).all()
+
+    # goes thru all those bookings and checks if the requested time is between an already existing reservation
     for bk in currBooking:
-        if ((bk.booking_startdatetime <= startdt and startdt <= bk.booking_enddatetime) or (endt >= bk.booking_startdatetime and endt <= bk.booking_enddatetime)):
-            prefSpots.remove(Spot.query.filter_by(spot_id == bk.booking_spot).first())
-                
-    #initializes the list of spots
+        if (bk.booking_startdatetime <= startdt and startdt <= bk.booking_enddatetime) or (endt >= bk.booking_startdatetime and endt <= bk.booking_enddatetime):
+            prefSpots.remove(Spot.query.filter_by(spot_id=bk.booking_spot).first())
+
+    # initializes the list of spots
     splist = SpotList()
-    
-    #adds each availible spot into the list
+
+    # adds each availible spot into the list
     for sp in prefSpots:
         splist.spots.append(sp)
-    
-    #serializes the list
-    result=SpotListSchema().dump(splist)
-       
+
+    # serializes the list
+    result = SpotListSchema().dump(splist)
+
     # return the list of avilible spots in terms of JSON
     return jsonify({
         'availablespots': result
     }), 200
 
 
-
-
-
-
 # [[ Create and Add Example Data ]]
 user1 = User(username="userperson", email="person@example.com",
              password="sha256$vhSHEyRj$21e523d553832ce4f3a4639164cb190e0866bff73380870995f67f32e888da49")
-#CHANGE THESE BEFORE TESTING********************* specifically the location
+# CHANGE THESE BEFORE TESTING********************* specifically the location
 spot1 = Spot(spot_name="gleason", spot_noiselevel=0, spot_food=0, spot_computers=0)
 spot2 = Spot(spot_name="Q&i", spot_noiselevel=1, spot_food=1, spot_computers=1)
 spot3 = Spot(spot_name="iZone", spot_noiselevel=5, spot_food=1, spot_computers=0)
 spot4 = Spot(spot_name="Rush Rhees", spot_noiselevel=0, spot_food=0, spot_computers=0)
 
 # dt format: datetime.strptime("08/30/1797 6:30 AM", '%m/%d/%Y %I:%M %p')
-booking1 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM", "%Y-%m-%d_%I:%M %p"), booking_enddatetime=datetime.strptime("2019-11-30_08:30 AM", "%Y-%m-%d_%I:%M %p"),
+booking1 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM", "%Y-%m-%d_%I:%M %p"),
+                   booking_enddatetime=datetime.strptime("2019-11-30_08:30 AM", "%Y-%m-%d_%I:%M %p"),
                    booking_user=1, booking_spot=1)
-booking2 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM", "%Y-%m-%d_%I:%M %p"), booking_enddatetime=datetime.strptime("2019-11-30_08:30 AM", "%Y-%m-%d_%I:%M %p"),
+booking2 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM", "%Y-%m-%d_%I:%M %p"),
+                   booking_enddatetime=datetime.strptime("2019-11-30_08:30 AM", "%Y-%m-%d_%I:%M %p"),
                    booking_user=1, booking_spot=2)
 
 # add all of these items to the database session

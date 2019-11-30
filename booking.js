@@ -1,11 +1,11 @@
 function thinghappened(date) {
-    $("#output").text($('dateCalender').html()); 
+    $("#output").text($('dateCalender').html());
     console.log("sat hello");
-};
+}
 
 function changepref() {
     $.ajax({
-	  "url": "localhost:5000/selection", //change from booking to selection
+	  "url": "/selection", //change from booking to selection
         "data": {
 	      "date": $('#dateCalender').html(),
 		"stime": $('#starttime').html(),
@@ -14,22 +14,23 @@ function changepref() {
 		"quiet": $('#quietfilter').prop('checked'),
 		"whisper": $('#whisperfilter').prop('checked'),
 		"comp": $('#compfilter').prop('checked'),
-	
         },
 	  "type": "POST",
-	  "dataType": "json"
+	  "dataType": "json",
 	}).done(function (response){
+	    console.log("Successfully rechose");
 	    var currOptions = $("#formspotcontainer");
-   	    $("#formspotcontainer").empty();
-	    
+   	    currOptions.empty();
+
 	    for(let opt of response) {
 	    	var newSpot = $('<input type="radio" name="spot" />');
-    	    	newSpot.appendTo(currOptions);
+	    	newSpot.appendTo(currOptions);
 	    }
-	    console.log("Successfully rechose"); 
-	    
-	}).fail(function(xhr, status, description){
-    		console.log("Error: " + description);
-	});
+	    console.log("Successfully rechose");
 
-};
+	}).fail(function(xhr, status, description){
+    		console.log("Error: " + status + description);
+	}).always(function(xhr, status){
+	    console.log("request completed with " + status);
+    });
+}
