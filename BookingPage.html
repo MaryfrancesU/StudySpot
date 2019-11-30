@@ -13,7 +13,19 @@
         // attach listeners
         $(document).ready(function() {
             // attach a listener to the inputs
-            $("#dateCalender").change(thinghappened);
+            //$("#dateCalender").change(thinghappened);
+            $("#dateCalender").change(changepref);
+            $("#starttime").change(changepref);
+            $("#endtime").change(changepref);
+            
+            //test if this works too
+           // $("filter").change(changepref);
+            
+            $("quietfilter").change(changepref);
+            $("whisperfilter").change(changepref);
+            $("foodfilter").change(changepref);
+            $("compfilter").change(changepref);
+
         });
     </script>
 </head>
