@@ -216,13 +216,12 @@ def selection():
             print("I get activated :) ")
 
     # initializes the list of spots
-    # splist = SpotList()
     spot_schema = SpotSchema()
-    serialized_spots = list()
+    serialized_names = list()
 
     for spots in prefSpots:
-        serialized = spot_schema.dump(spots)
-        serialized_spots.append(spots)
+        serialized = spots.spot_name
+        serialized_names.append(spots)
 
 
 
@@ -238,7 +237,7 @@ def selection():
 
     # return the list of avilible spots in terms of JSON
     return jsonify({
-        'availablespots': serialized_spots
+        'availablespots': serialized_names
     }), 200
 
 
