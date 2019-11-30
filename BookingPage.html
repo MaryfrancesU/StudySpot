@@ -12,15 +12,18 @@
     <script type="text/javascript">
         // attach listeners
         $(document).ready(function() {
+
+          //default date
+          document.getElementById('dateCalender').valueAsDate = new Date();
+          document.getElementById("starttime").defaultValue = "06:00";
+          document.getElementById("endtime").defaultValue = "07:00";
+
             // attach a listener to the inputs
-            //$("#dateCalender").change(thinghappened);
             $("#dateCalender").change(changepref);
             $("#starttime").change(changepref);
             $("#endtime").change(changepref);
 
-            //test if this works too
-            //$("checkbox[name ='filter']").change(changepref);
-
+            // $("#quietfilter").change(thinghappened);
             $("#quietfilter").change(changepref);
             $("#whisperfilter").change(changepref);
             $("#foodfilter").change(changepref);
@@ -49,10 +52,9 @@
     <h2>
         <form class = "form-in" action="/action_page.php"></form>
             <div class = "form-group" align = "center">
-                Select Date: <input type="date" id="dateCalender">
-                Start Time: <input type = "time" id = "starttime">
-                End Time: <input type = "time" id = "endtime">
-                <label id="output" form="checking">check</label>
+                Select Date: <input type="date" id="dateCalender" required>
+                Start Time: <input type = "time" id = "starttime" required>
+                End Time: <input type = "time" id = "endtime" required>
             </div>
         </form>
     </h2>
@@ -63,8 +65,8 @@
             <tbody>
             <tr>
                 <!-- Avaiable Study Spots-->
-                <form name = "spot-form">
-                    <td>
+                <form name = "spot-form" >
+                    <td id = "formspotcontainer">
                         {% for spot in spots %}
                             <input type="radio" name = "spot" > {{spot.spot_name}}<br> <br>
                         {% endfor %}

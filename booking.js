@@ -1,36 +1,47 @@
-function thinghappened(date) {
-    $("#output").text($('dateCalender').html());
-    console.log("sat hello");
+function thinghappened() {
+    console.log("the function is called");
 }
 
 function changepref() {
     $.ajax({
-	  "url": "/selection", //change from booking to selection
+        "url": "/selection",
         "data": {
-	      "date": $('#dateCalender').html(),
-		"stime": $('#starttime').html(),
-		"etime": $('#endtime').html(),
-		"food" : $('#foodfilter').prop('checked'),
-		"quiet": $('#quietfilter').prop('checked'),
-		"whisper": $('#whisperfilter').prop('checked'),
-		"comp": $('#compfilter').prop('checked'),
+            "date": $('#dateCalender').val(),
+		    "stime": $('#starttime').val(),
+		    "etime": $('#endtime').val(),
+            "food" : $('#foodfilter').prop('checked'),
+            "quiet": $('#quietfilter').prop('checked'),
+            "whisper": $('#whisperfilter').prop('checked'),
+            "comp": $('#compfilter').prop('checked'),
         },
-	  "type": "POST",
-	  "dataType": "json",
+        "type": "POST",
+        "dataType": "json"
 	}).done(function (response){
 	    console.log("Successfully rechose");
-	    var currOptions = $("#formspotcontainer");
-   	    currOptions.empty();
 
-	    for(let opt of response) {
-	    	var newSpot = $('<input type="radio" name="spot" />');
-	    	newSpot.appendTo(currOptions);
+	    let avspots = response.availablespots;
+	    let currOptions = $("#formspotcontainer");
+        currOptions.empty();
+
+        //creates a new radio input with the spot's name next to it
+	    for(let opt of avspots) {
+	        let label = document.createElement("label");
+            let r = document.createElement("input");
+            let text = document.createElement("label");
+            text.textContent=opt.spot_name;
+
+            r.setAttribute("type", "radio");
+            r.name = "spot";
+            label.appendChild(r);
+            label.appendChild(text);
+            currOptions.append(label);
+            let linebreak1 = document.createElement("br");
+            currOptions.append(linebreak1);
+            let linebreak2 = document.createElement("br");
+            currOptions.append(linebreak2);
+
 	    }
-	    console.log("Successfully rechose");
-
 	}).fail(function(xhr, status, description){
     		console.log("Error: " + status + description);
-	}).always(function(xhr, status){
-	    console.log("request completed with " + status);
-    });
+	});
 }

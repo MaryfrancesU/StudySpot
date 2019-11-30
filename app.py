@@ -56,13 +56,14 @@ class SpotSchema(Schema):
         model = Spot
 
 
-class SpotList():
+class SpotList:
     def __init__(self):
         self.spots = []
 
 
 class SpotListSchema(Schema):
-    spots = fields.Nested(SpotSchema, only=["spot_id", "spot_name"], many=True)
+ #   spots = fields.Nested(SpotSchema, only=["spot_id", "spot_name"], many=True)
+    spots = fields.Nested(SpotSchema, many=True)
 
 
 class Booking(db.Model):
@@ -168,7 +169,7 @@ def signup():
 
 
 @app.route('/book')
-@login_required
+# @login_required
 def dashboard():
     # date = request.form['date']
     # print(date)
@@ -191,12 +192,12 @@ def explore():
 
 
 @app.route('/selection', methods=['POST'])
-@login_required  # double-check if it breaks something
+# @login_required  # double-check if it breaks something
 def selection():
-    print("The request is sent")
-    date = request.form.get("date")  # dictionary
-    stime = request.form.get("stime")
-    etime = request.form.get("etime")
+    print("The request is sent: " + request.form.get("stime"))
+    date = datetime.strptime(request.form.get("date"), "%Y-%m-%d")# dictionary
+    stime = datetime.strptime(request.form.get("stime"), "%H:%M").time()
+    etime = datetime.strptime(request.form.get("etime"), "%H:%M").time()
     foodchoice = request.form.get("food")
     compchoice = request.form.get("comp")
 
@@ -205,8 +206,8 @@ def selection():
 
     # check each booking in the table and see if each spot in the list already
     # has a reservation at the specificed time and remove from list
-    startdt = datetime.datetime.combine(date, stime)
-    endt = datetime.datetime.combine(date, etime)
+    startdt = datetime.combine(date, stime)
+    endt = datetime.combine(date, etime)
 
     # gets all bookings whose spot is in the list
     currBooking = Booking.query.filter(Booking.booking_spot.in_(prefSpots)).all()
@@ -223,8 +224,11 @@ def selection():
     for sp in prefSpots:
         splist.spots.append(sp)
 
+    print(splist)
     # serializes the list
     result = SpotListSchema().dump(splist)
+
+    print(result)
 
     # return the list of avilible spots in terms of JSON
     return jsonify({
@@ -235,11 +239,10 @@ def selection():
 # [[ Create and Add Example Data ]]
 user1 = User(username="userperson", email="person@example.com",
              password="sha256$vhSHEyRj$21e523d553832ce4f3a4639164cb190e0866bff73380870995f67f32e888da49")
-# CHANGE THESE BEFORE TESTING********************* specifically the location
-spot1 = Spot(spot_name="gleason", spot_noiselevel=0, spot_food=0, spot_computers=0)
-spot2 = Spot(spot_name="Q&i", spot_noiselevel=1, spot_food=1, spot_computers=1)
-spot3 = Spot(spot_name="iZone", spot_noiselevel=5, spot_food=1, spot_computers=0)
-spot4 = Spot(spot_name="Rush Rhees", spot_noiselevel=0, spot_food=0, spot_computers=0)
+spot1 = Spot(spot_name="Gleason", spot_noiselevel=2, spot_food=True, spot_computers=True)
+spot2 = Spot(spot_name="Rettner", spot_noiselevel=1, spot_food=False, spot_computers=True)
+spot3 = Spot(spot_name="iZone", spot_noiselevel=2, spot_food=True, spot_computers=False)
+spot4 = Spot(spot_name="Well Browns", spot_noiselevel=0, spot_food=False, spot_computers=False)
 
 # dt format: datetime.strptime("08/30/1797 6:30 AM", '%m/%d/%Y %I:%M %p')
 booking1 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM", "%Y-%m-%d_%I:%M %p"),
