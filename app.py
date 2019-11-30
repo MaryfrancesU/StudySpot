@@ -44,7 +44,6 @@ class Spot(db.Model):
     __tablename__ = "Spots"
     spot_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     spot_name = db.Column(db.Unicode(64), nullable=False)
-    # spot_location = db.Column(db.Unicode(64), nullable=False)
     spot_noiselevel = db.Column(db.Integer(), nullable=False)
     spot_food = db.Column(db.Boolean(), nullable=False)
     spot_computers = db.Column(db.Boolean(), nullable=False)
