@@ -54,6 +54,7 @@ class SpotSchema(Schema):
     class Meta:
         fields = ('spot_name', 'spot_id')
 
+
 class Booking(db.Model):
     __tablename__ = "Bookings"
     booking_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -171,6 +172,19 @@ def explore():
     return render_template('ExploreLibraries.html')
 
 
+@app.route('/view-bookings')
+@login_required
+def bookings():
+    return render_template('ViewBookings.html')
+
+
+@app.route('/view-profile')
+@login_required
+def viewProfile():
+    user = current_user
+    return render_template('UserProfile.html', user=user)
+
+
 @app.route('/selection', methods=['POST'])
 # @login_required  # double-check if it breaks something
 def selection():
@@ -179,15 +193,27 @@ def selection():
     stime = datetime.strptime(request.form.get("stime"), "%H:%M").time()
     etime = datetime.strptime(request.form.get("etime"), "%H:%M").time()
     foodchoice = request.form.get("food") == "true"
-    print("Foodchoice:")
-    print(foodchoice)
     compchoice = request.form.get("comp") == "true"
-    print("Computer choice:")
-    print(compchoice)
+    silencechoice = request.form.get("quiet") == "true"
+    whisperchoice = request.form.get("whisper") == "true"
+
+    #getting the noise level desired
+    if silencechoice and not whisperchoice:
+        noiselevel = 0
+    elif not silencechoice and whisperchoice:
+        noiselevel = 1
+    else:
+        noiselevel = 2
 
     # first get all spots that have the specified characteristsics --> Check if set syntax is good
-
-    prefSpots = list(db.session.query(Spot).filter(Spot.spot_food==foodchoice, Spot.spot_computers==compchoice))
+    if foodchoice and compchoice:
+        prefSpots = list(db.session.query(Spot).filter(Spot.spot_food == foodchoice, Spot.spot_computers == compchoice, Spot.spot_noiselevel <= noiselevel))
+    elif not foodchoice and not compchoice:
+        prefSpots = list(db.session.query(Spot).filter(Spot.spot_noiselevel <= noiselevel))
+    elif foodchoice:
+        prefSpots = list(db.session.query(Spot).filter(Spot.spot_food == foodchoice, Spot.spot_noiselevel <= noiselevel))
+    elif compchoice:
+        prefSpots = list(db.session.query(Spot).filter(Spot.spot_computers == compchoice, Spot.spot_noiselevel <= noiselevel))
 
     print("Preferred Spots: ")
     print(prefSpots)
@@ -220,7 +246,7 @@ def selection():
 
     for spots in prefSpots:
         serialized = spots.spot_name
-        serialized_names.append(spots)
+        serialized_names.append(serialized)
 
 
 
@@ -240,6 +266,35 @@ def selection():
     }), 200
 
 
+@app.route('/actualbooking', methods=['POST'])
+@login_required  # double-check if it breaks something
+def actualbooking():
+    spname = request.form.get("spotname").strip()
+    print("The name is "+spname)
+    spot = db.session.query(Spot).filter(Spot.spot_name == spname).first_or_404()
+    spotid = spot.spot_id
+    user = current_user
+    userid = user.id
+
+    date = datetime.strptime(request.form.get("date"), "%Y-%m-%d")  # dictionary
+    stime = datetime.strptime(request.form.get("stime"), "%H:%M").time()
+    etime = datetime.strptime(request.form.get("etime"), "%H:%M").time()
+    startdt = datetime.combine(date, stime)
+    endt = datetime.combine(date, etime)
+
+    booking = Booking(booking_startdatetime=startdt, booking_enddatetime=endt, booking_user=userid, booking_spot=spotid)
+    db.session.add(booking)
+
+    # commit database changes
+    db.session.commit()
+
+    return {
+        "first": "hi"
+           }, 200
+
+
+
+
 # [[ Create and Add Example Data ]]
 user1 = User(username="userperson", email="person@example.com",
              password="sha256$vhSHEyRj$21e523d553832ce4f3a4639164cb190e0866bff73380870995f67f32e888da49")
@@ -249,23 +304,20 @@ spot3 = Spot(spot_name="iZone", spot_noiselevel=2, spot_food=True, spot_computer
 spot4 = Spot(spot_name="Well Browns", spot_noiselevel=0, spot_food=False, spot_computers=False)
 
 # dt format: datetime.strptime("08/30/1797 6:30 AM", '%m/%d/%Y %I:%M %p')
-booking1 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM", "%Y-%m-%d_%I:%M %p"),
-                   booking_enddatetime=datetime.strptime("2019-11-30_08:30 AM", "%Y-%m-%d_%I:%M %p"),
-                   booking_user=1, booking_spot=1)
-booking2 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM", "%Y-%m-%d_%I:%M %p"),
-                   booking_enddatetime=datetime.strptime("2019-11-30_08:30 AM", "%Y-%m-%d_%I:%M %p"),
-                   booking_user=1, booking_spot=2)
+# booking1 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM", "%Y-%m-%d_%I:%M %p"),
+#                    booking_enddatetime=datetime.strptime("2019-11-30_08:30 AM", "%Y-%m-%d_%I:%M %p"),
+#                    booking_user=1, booking_spot=1)
+# booking2 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM", "%Y-%m-%d_%I:%M %p"),
+#                    booking_enddatetime=datetime.strptime("2019-11-30_08:30 AM", "%Y-%m-%d_%I:%M %p"),
+#                    booking_user=1, booking_spot=2)
 
 # add all of these items to the database session
 db.session.add_all([user1])
 db.session.add_all([spot1, spot2, spot3, spot4])
-db.session.add_all([booking1, booking2])
+# db.session.add_all([booking1, booking2])
 
 # commit database changes
 db.session.commit()
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-    # user: eyang13
-    # Password: Password

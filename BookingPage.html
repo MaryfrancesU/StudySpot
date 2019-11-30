@@ -23,11 +23,11 @@
             $("#starttime").change(changepref);
             $("#endtime").change(changepref);
 
-            // $("#quietfilter").change(thinghappened);
             $("#quietfilter").change(changepref);
             $("#whisperfilter").change(changepref);
             $("#foodfilter").change(changepref);
             $("#compfilter").change(changepref);
+
         });
     </script>
 </head>
@@ -40,8 +40,8 @@
 
         <div class = "MenuContent">
             <ul>
-                <li> <a href="#"> View & Edit Profile </a> </li>
-                <li> <a href="#"> View Upcoming Appointments </a> </li>
+                <li> <a href="/view-profile"> View & Edit Profile </a> </li>
+                <li> <a href="view-bookings"> View Upcoming Appointments </a> </li>
                 <li> <a href="#"> Contact Us </a> </li>
                 <li> <a href = "/logout"> Sign Out </a> </li>
             </ul>
@@ -108,18 +108,6 @@
             </ul>
         </form>
     </div>
-
-
-
-    <script>
-        function openForm() {
-            document.getElementById("popup").style.display = "block";
-            document.getElementById("overlay").style.display = "block";
-        }
-        function closeForm() {
-          document.getElementById("popup").style.display = "none";
-        }
-    </script>
 
 
 </body>

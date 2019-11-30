@@ -1,5 +1,19 @@
-function thinghappened() {
-    console.log("the function is called");
+function makebooking(spotname) {
+    $.ajax({
+        "url": "/actualbooking",
+        "data": {
+            "spotname": spotname,
+            "date": $('#dateCalender').val(),
+		    "stime": $('#starttime').val(),
+		    "etime": $('#endtime').val(),
+        },
+        "type": "POST",
+        "dataType": "json"
+	}).done(function (response){
+	    console.log(response);
+    }).fail(function(xhr, status, description){
+    		console.log("Error: " + status + description);
+	});
 }
 
 function changepref() {
@@ -44,4 +58,21 @@ function changepref() {
 	}).fail(function(xhr, status, description){
     		console.log("Error: " + status + description);
 	});
+}
+
+function openForm() {
+    let radios = document.getElementsByName('spot');
+
+    for(let i = 0; i < radios.length; i++) {
+        if(radios[i].checked) {
+            makebooking(radios[i].nextSibling.textContent);
+        }
+    }
+
+    document.getElementById("popup").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("popup").style.display = "none";
 }
