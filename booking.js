@@ -18,7 +18,7 @@ function changepref() {
         "dataType": "json"
 	}).done(function (response){
 	    console.log("Successfully rechose");
-
+      console.log(response);
 	    let avspots = response.availablespots;
 	    let currOptions = $("#formspotcontainer");
         currOptions.empty();

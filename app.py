@@ -10,7 +10,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from datetime import datetime, timedelta
 from flask_httpauth import HTTPBasicAuth
 from marshmallow import Schema, fields
-# from marshmallow_sqlalchemy import ModelSchema
+from marshmallow_sqlalchemy import ModelSchema
 
 # web stuff
 app = Flask(__name__)
@@ -53,18 +53,7 @@ class Spot(db.Model):
 
 class SpotSchema(Schema):
     class Meta:
-        model = Spot
-
-
-class SpotList:
-    def __init__(self):
-        self.spots = []
-
-
-class SpotListSchema(Schema):
- #   spots = fields.Nested(SpotSchema, only=["spot_id", "spot_name"], many=True)
-    spots = fields.Nested(SpotSchema, many=True)
-
+        fields = ('spot_name', 'spot_id')
 
 class Booking(db.Model):
     __tablename__ = "Bookings"
@@ -124,10 +113,6 @@ class SignUpForm(FlaskForm):
                                                 EqualTo('password', message='Passwords need to match')])
 
 
-# class BookingForm(FlaskForm):
-#     date = DateField()
-#     starttime = TimeField
-
 @app.route('/')
 def home():
     return render_template('HomePage.html')
@@ -169,12 +154,8 @@ def signup():
 
 
 @app.route('/book')
-# @login_required
+# @login_required --> need to put it back in
 def dashboard():
-    # date = request.form['date']
-    # print(date)
-
-    # localtime = time.localtime(time.time())
     spots = Spot.query.all()
     return render_template('BookingPage.html', spots=spots)
 
@@ -198,41 +179,66 @@ def selection():
     date = datetime.strptime(request.form.get("date"), "%Y-%m-%d")# dictionary
     stime = datetime.strptime(request.form.get("stime"), "%H:%M").time()
     etime = datetime.strptime(request.form.get("etime"), "%H:%M").time()
-    foodchoice = request.form.get("food")
-    compchoice = request.form.get("comp")
+    foodchoice = request.form.get("food") == "true"
+    print("Foodchoice:")
+    print(foodchoice)
+    compchoice = request.form.get("comp") == "true"
+    print("Computer choice:")
+    print(compchoice)
 
     # first get all spots that have the specified characteristsics --> Check if set syntax is good
-    prefSpots = set(Spot.query.filter_by(spot_food=foodchoice, spot_computers=compchoice))
+
+    prefSpots = list(db.session.query(Spot).filter(Spot.spot_food==foodchoice, Spot.spot_computers==compchoice))
+
+    print("Preferred Spots: ")
+    print(prefSpots)
 
     # check each booking in the table and see if each spot in the list already
     # has a reservation at the specificed time and remove from list
     startdt = datetime.combine(date, stime)
     endt = datetime.combine(date, etime)
 
+    # make a list associating the integers with the spots
+    integers = list()
+    for sp in prefSpots:
+        integers.append(sp.spot_id)
+
     # gets all bookings whose spot is in the list
-    currBooking = Booking.query.filter(Booking.booking_spot.in_(prefSpots)).all()
+    #currBooking = Booking.query.filter(Booking.booking_spot.in_(integers)).all()
+    currBooking = db.session.query(Booking).filter(Booking.booking_spot.in_(integers)).all()
+    print("Current Bookings are: ")
+    print(currBooking)
 
     # goes thru all those bookings and checks if the requested time is between an already existing reservation
     for bk in currBooking:
         if (bk.booking_startdatetime <= startdt and startdt <= bk.booking_enddatetime) or (endt >= bk.booking_startdatetime and endt <= bk.booking_enddatetime):
             prefSpots.remove(Spot.query.filter_by(spot_id=bk.booking_spot).first())
+            print("I get activated :) ")
 
     # initializes the list of spots
-    splist = SpotList()
+    # splist = SpotList()
+    spot_schema = SpotSchema()
+    serialized_spots = list()
+
+    for spots in prefSpots:
+        serialized = spot_schema.dump(spots)
+        serialized_spots.append(spots)
+
+
 
     # adds each availible spot into the list
-    for sp in prefSpots:
-        splist.spots.append(sp)
+    # for sp in prefSpots:
+    #    splist.spots.append(sp)
 
-    print(splist)
+    # print(splist)
     # serializes the list
-    result = SpotListSchema().dump(splist)
-
-    print(result)
+    # result = SpotListSchema().dump(splist)
+    #
+    # print(result)
 
     # return the list of avilible spots in terms of JSON
     return jsonify({
-        'availablespots': result
+        'availablespots': serialized_spots
     }), 200
 
 
