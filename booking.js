@@ -21,24 +21,24 @@ function changepref() {
       console.log(response);
 	    let avspots = response.availablespots;
 	    let currOptions = $("#formspotcontainer");
-        currOptions.empty();
+            currOptions.empty();
 
         //creates a new radio input with the spot's name next to it
 	    for(let opt of avspots) {
 	        let label = document.createElement("label");
-            let r = document.createElement("input");
-            let text = document.createElement("label");
-            text.textContent=opt.spot_name;
+		    let r = document.createElement("input");
+		    let text = document.createElement("label");
+		    text.textContent=opt;
 
-            r.setAttribute("type", "radio");
-            r.name = "spot";
-            label.appendChild(r);
-            label.appendChild(text);
-            currOptions.append(label);
-            let linebreak1 = document.createElement("br");
-            currOptions.append(linebreak1);
-            let linebreak2 = document.createElement("br");
-            currOptions.append(linebreak2);
+		    r.setAttribute("type", "radio");
+		    r.name = "spot";
+		    label.appendChild(r);
+		    label.appendChild(text);
+		    currOptions.append(label);
+		    let linebreak1 = document.createElement("br");
+		    currOptions.append(linebreak1);
+		    let linebreak2 = document.createElement("br");
+		    currOptions.append(linebreak2);
 
 	    }
 	}).fail(function(xhr, status, description){
