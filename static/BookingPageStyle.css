@@ -30,7 +30,7 @@ input#menu {
     display: none;
 }
 
-input:checked ~ label {
+input#menu:checked ~ label {
     background: url(menuopen.png) no-repeat left center;
 }
 
