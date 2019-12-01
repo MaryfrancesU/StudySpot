@@ -5,8 +5,16 @@
     <title>View Bookings</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='ViewBookingsStyle.css')}}">
-
+    <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='ViewBookings.css')}}">
+    <script>
+      function getSpotName(spotlist, find_id) {
+        for (spot in spotlist) {
+          if (spot.spot_id == find_id) {
+            return spot.spot_name;
+          }
+        }
+      }
+    </script>
   </head>
 
   <body>
@@ -17,15 +25,15 @@
 
       <h2> Your upcoming appointments are: </h2>
 
-      <div class = "MainTableDiv">
-          <table style = "float: right" class = "mytable">
+      <div class = "container">
+        <!-- style = "text-align: center" class = "mytable" -->
+          <table id="table1">
               <tbody>
               <tr>
                   <!-- Available Study Spots-->
-
                     <td>
-                        {% for booking in bookings %}
-                            <input type="radio" name = "spot" > {{booking.booking_spot}}<br> <br>
+                        {% for bk in info_list %}
+                            <h2 style = "color: DarkOrchid;"> {{bk.spot_name}} FROM {{bk.starttime}} TO {{bk.endtime}} </h2> <br> <br>
                         {% endfor %}
                     </td>
 

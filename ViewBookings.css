@@ -1,0 +1,66 @@
+body {
+    background-color: white;
+    margin:50px 0px;
+    padding:0px;
+    text-align:center;
+    align:justify;
+
+}
+
+.container{
+    background-color: white;
+    width: 50%;
+    margin: auto;
+    padding: 70px 0;
+    text-align: center;
+}
+
+h1 {
+    color: DarkOrchid;
+    text-align: center;
+    size: 50px;
+}
+
+h2 {
+  color: Turquoise;
+  text-align: center;
+  size: 50px;
+}
+
+
+label {
+  color: DarkOrchid;
+  text-align: center;
+  font-size: 20px;
+}
+
+form {
+  text-align: center;
+}
+
+input {
+  color: Turquoise;
+  font-size: 25px;
+}
+
+.btn    {
+    background-color: Turquoise;
+    color: white;
+    font-size: 20px;
+    align-content: center;
+    padding: 10px 32px;
+    border-radius: 12px;
+    border: 2px solid DarkOrchid;
+}
+
+div.container {
+    width:98%;
+    margin:1%;
+  }
+  table#table1 {
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+    width:100px;
+  }
+  tr,td {text-align:left;}
