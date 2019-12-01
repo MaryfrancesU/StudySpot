@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Spot Home Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='HomePageStyle.css')}}">
+
+</head>
+
+
+<body>
+
+    <img src="/static/logo.png" class = "img-fluid mx-auto my-auto">
+    <div style="float:right;" class="px-lg-3 py-lg-4">
+            <a href = "/login">
+                <button class = "btn" type="button"> Log In </button>
+            </a>
+
+            <a href = "/signup">
+		        <button class = "btn" type="button"> Sign Up </button>
+            </a>
+
+            <a href = "/explore-libraries">
+		        <button class = "btn" type="button"> Explore Libraries </button>
+            </a>
+    </div>
+
+    <div style="text-align: center;" id = "header">
+        <div class ="row container-fluid">
+            <div class="col-lg-12" style="text-align: center;"> <h1> Welcome to StudySpot! </h1> </div>
+            <div class="col-lg-12" style="text-align: center;"> <h3> Studying has never been smoother. </h3> </div>
+        </div>
+        <img class = "rounded " src="/static/rando.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 55%;">
+
+
+    </div>
+
+
+    <div class ="container-fluid">
+
+        <!-- Row 1 -->
+        <div class = "row mt-lg-4 mb-lg-4 mr-lg-4 ml-lg-4" id = "intro-card" style="text-align: center;">
+            Have you ever wandered around your campus libraries desperately hoping you can find an available place to sit and study?
+            <br> Have you ever wished you wouldn't have to spend so much of your time trying to find a place you can be productive in?
+            <br> If you answered yes to either of those questions, then we have a solution for you!
+
+            <br> <br> <br> UR StudySpot is the University of Rochester's main portal for, well, booking your favorite study spot!
+            With a system that updates itself real-time, and a wide array of spots to choose from, you no longer have to spend your precious time, wandering around campus, looking for a place to study!
+            We are here to support your studying to the best of our abilities, and to make sure you make the most of your UR experience!
+        </div>
+
+        <!-- Row 2 -->
+        <div class = "row" id = "imrow1">
+            <div class="col-lg-6">
+				<img src="/static/studying.png" class = "img-fluid">
+			</div>
+            <div class="col-lg-6 mx-auto my-auto">
+				The University of Rochester offers a wide selection of libraries and buildings, perfectly matched to your preferences!
+                Do you have a preferred location? Need computers? Want to be able to snack while you study? Just let us know and we'll do the filtering for you!
+			</div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class = "row" id = "imrow4">
+             <div class="col-lg-6 mx-auto my-auto">
+                 Check out our Bookings Page, find your "soulmate" spot, and book it!
+                 You can always make multiple bookings or view your profile to kee track of your upcoming appointments.
+                 Enjoy your time with us and thank you for using our services :)
+			</div>
+
+			<div class="col-lg-6">
+				<img src="/static/thinking.png" class = "img-fluid mt-lg-4 mb-lg-4">
+			</div>
+
+        </div>
+
+        <!-- Row 4 -->
+        <div class = "row" id = "logo-row">
+
+            <div class="col-lg-6 mx-auto my-auto">
+                <h4 style="text-align: center; font-size: 30px; font-family: Brush Script MT, Brush Script Std, cursive;"> What are you waiting for? <a href = "/signup"> Sign up</a> for a free account now! </h4>
+				 <!-- <img src="/static/logo.png" class = "img-fluid"> -->
+			</div>
+
+        </div>
+
+
+    </div> <!-- end of container -->
+
+
+    <!-- Have footer will links -->
+    <div id = "footer">
+        <img src="/static/location.png" class = "mt-lg-1 mb-lg-1"> 1234 Study Spot Blvd, <b>Rochester NY</b> <br>
+        <img src="/static/phone.png" class = "mt-lg-1 mb-lg-1"> + 123 456 7890 <br>
+        <img src="/static/mail.png" class = "mt-lg-1 mb-lg-1"> urstudyspot@gmail.com <br>
+
+        <div style="text-align: right">Copyright &copy; 2019</div>
+    </div>
+
+
+    <!-- Bootstrap stuff - DON'T TOUCH -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>View Bookings</title>
+    <link rel="stylesheet" type = "text/css" href = "{{url_for('static',filename='ViewBookingsStyle.css')}}">
+
+      <script>
+      function getSpotName(spotlist, find_id) {
+        for (spot in spotlist) {
+          if (spot.spot_id == find_id) {
+            return spot.spot_name;
+          }
+        }
+      }
+    </script>
+
+  </head>
+
+
+  <body>
+
+    <div class = "DropdownMenu">
+        <input type = "checkbox" id = "menu">
+        <label for = "menu" style="text-align: left"> Menu </label>
+
+        <div class = "MenuContent">
+            <ul>
+                <li> <a href="/view-profile"> View & Edit Profile </a> </li>
+                <li> <a href="view-bookings"> View Upcoming Appointments </a> </li>
+                <li> <a href="/book"> Book a Spot! </a> </li>
+                <li> <a href = "/logout"> Sign Out </a> </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <br>
+    <br>
+
+    <h1> Welcome, {{user.username}}! </h1>
+      <div class="container-fluid">
+          <img src="/static/logo.png" style="display: block; margin-left: auto; margin-right: auto;">
+      </div>
+
+      <h2> Your upcoming appointments are: </h2>
+
+      <div class = "container-fluid">
+        <!-- style = "text-align: center" class = "mytable" -->
+          <table id="table1">
+              <tbody>
+              <tr>
+                  <!-- Available Study Spots-->
+                    <td>
+                        {% for bk in info_list %}
+                            <h2 style = "color: DarkOrchid; font-size: 20px;"> {{bk.spot_name}} FROM {{bk.starttime}} TO {{bk.endtime}} </h2> <br> <br>
+                        {% endfor %}
+                    </td>
+
+
+              </tr>
+              </tbody>
+          </table>
+
+      </div>
+
+  </body>
+
+</html>

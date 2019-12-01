@@ -1,0 +1,119 @@
+<!-- useful link: https://www.datasciencelearner.com/python-ajax-json-request-form-flask/ -->
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Book Study Spot</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='BookingPageStyle.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type = "text/javascript" src = "{{ url_for('static',filename='booking.js') }}"> </script>
+    <script type="text/javascript">
+        // attach listeners
+        $(document).ready(function() {
+
+          //default date
+          document.getElementById('dateCalender').valueAsDate = new Date();
+          document.getElementById("starttime").defaultValue = "06:00";
+          document.getElementById("endtime").defaultValue = "07:00";
+
+            // attach a listener to the inputs
+            $("#dateCalender").change(changepref);
+            $("#starttime").change(changepref);
+            $("#endtime").change(changepref);
+
+            $("#quietfilter").change(changepref);
+            $("#whisperfilter").change(changepref);
+            $("#foodfilter").change(changepref);
+            $("#compfilter").change(changepref);
+
+            changepref() ;
+
+        });
+    </script>
+</head>
+
+<body>
+    <div id="overlay"></div>
+    <div class = "DropdownMenu">
+        <input type = "checkbox" id = "menu">
+        <label for = "menu"> Menu </label>
+
+        <div class = "MenuContent">
+            <ul>
+                <li> <a href="/view-profile"> View & Edit Profile </a> </li>
+                <li> <a href="/view-bookings"> View Upcoming Appointments </a> </li>
+                <li> <a href="#"> Contact Us </a> </li>
+                <li> <a href = "/logout"> Sign Out </a> </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <h2>
+        <form class = "form-in" action="/action_page.php"></form>
+            <div class = "form-group" align = "center">
+                Select Date: <input type="date" id="dateCalender" required>
+                Start Time: <input type = "time" id = "starttime" required>
+                End Time: <input type = "time" id = "endtime" required>
+            </div>
+        </form>
+    </h2>
+
+
+    <div class = "MainTableDiv">
+        <table style = "float: right" class = "mytable">
+            <tbody>
+            <tr>
+                <!-- Avaiable Study Spots-->
+                <form name = "spot-form" >
+                    <td id = "formspotcontainer">
+                        {% for spot in spots %}
+                            <input type="radio" name = "spot" > {{spot.spot_name}}<br> <br>
+                        {% endfor %}
+                    </td>
+
+                </form>
+            </tr>
+            </tbody>
+        </table>
+
+        <table style = "float: left" class = "mytable2">
+            <tr>
+                <!-- Filter Results -->
+                <form name = "filter-form">
+                    <td>
+                        <input type="checkbox" name = "filter" id = "quietfilter"> Quiet (no talking) <br> <br>
+                        <input type="checkbox" name = "filter" id = "whisperfilter"> Quiet (whisper level) <br> <br>
+                        <input type="checkbox" name = "filter" id = "foodfilter"> Food Allowed <br> <br>
+                        <input type="checkbox" name = "filter" id = "compfilter"> Computers Available
+                    </td>
+
+                </form>
+            </tr>
+        </table>
+    </div>
+
+
+    <div class = "ButtonDiv">
+        <button class = "open-button" type="button" onclick="openForm()"> Book Spot!! </button>
+    </div>
+
+    <div id="popup">
+        <h3> Your Study Spot has been booked! </h3>
+        <form action="/action_page.php" class="form-container">
+            <ul>
+                <li> <a href="/book"> Book Another Spot </a> </li>
+                <li> <a href="/view-bookings"> View All Bookings </a> </li>
+                <li> <a href="/logout"> Sign Out </a> </li>
+            </ul>
+        </form>
+    </div>
+
+
+</body>
+
+
+
+</html>
