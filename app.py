@@ -576,7 +576,11 @@ spot37 = Spot(spot_name="iZone Booth 2", spot_noiselevel=2, spot_food=True, spot
 spot38 = Spot(spot_name="iZone Booth 3", spot_noiselevel=2, spot_food=True, spot_computers=False)
 
 # PRR
-spot39 = Spot(spot_name="PRR", spot_noiselevel=0, spot_food=True, spot_computers=False)
+spot39 = Spot(spot_name="PRR Table 1", spot_noiselevel=0, spot_food=True, spot_computers=False)
+spot39_2 = Spot(spot_name="PRR Table 2", spot_noiselevel=0, spot_food=True, spot_computers=False)
+spot39_3 = Spot(spot_name="PRR Table 3", spot_noiselevel=0, spot_food=True, spot_computers=False)
+spot39_4 = Spot(spot_name="PRR Table 4", spot_noiselevel=0, spot_food=True, spot_computers=False)
+spot39_5 = Spot(spot_name="PRR Table 5", spot_noiselevel=0, spot_food=True, spot_computers=False)
 
 # Q&i
 spot40 = Spot(spot_name="Q&i Table 1", spot_noiselevel=2, spot_food=True, spot_computers=True)
@@ -613,7 +617,8 @@ spot62 = Spot(spot_name="Wegmans Floor 4 Table 2", spot_noiselevel=2, spot_food=
 spot63 = Spot(spot_name="Wegmans Floor 4 Table 3", spot_noiselevel=2, spot_food=True, spot_computers=True)
 
 # Welles Brown
-spot64 = Spot(spot_name="Welles Brown", spot_noiselevel=1, spot_food=True, spot_computers=False)
+spot64 = Spot(spot_name="Welles Brown Couch 1", spot_noiselevel=1, spot_food=True, spot_computers=False)
+spot65 = Spot(spot_name="Welles Brown Couch 2", spot_noiselevel=1, spot_food=True, spot_computers=False)
 
 
 # dt format: datetime.strptime("08/30/1797 6:30 AM", '%m/%d/%Y %I:%M %p')
@@ -629,9 +634,9 @@ booking2 = Booking(booking_startdatetime=datetime.strptime("2019-11-30_06:30 AM"
 db.session.add_all([user1])
 db.session.add_all([spot1, spot2, spot3, spot4, spot5, spot6, spot7, spot8, spot9, spot10, spot11, spot12, spot13, spot14, spot15, spot16,
                     spot17, spot18, spot19, spot20, spot21, spot22, spot23, spot24, spot25, spot26, spot27, spot28, spot29, spot30, spot31,
-                    spot32, spot33, spot34, spot35, spot36, spot37, spot38, spot39, spot40, spot41, spot42, spot43, spot44, spot45, spot46,
-                    spot47, spot48, spot49, spot50, spot51, spot51, spot52, spot53, spot54, spot55, spot56, spot57, spot58, spot59, spot60,
-                    spot61, spot62, spot63, spot64])
+                    spot32, spot33, spot34, spot35, spot36, spot37, spot38, spot39, spot39_2, spot39_3, spot39_4, spot39_5, spot40, spot41,
+                    spot42, spot43, spot44, spot45, spot46, spot47, spot48, spot49, spot50, spot51, spot51, spot52, spot53, spot54, spot55,
+                    spot56, spot57, spot58, spot59, spot60, spot61, spot62, spot63, spot64, spot65])
 db.session.add_all([booking1, booking2])
 
 # commit database changes
