@@ -32,8 +32,8 @@
                 {{form.email.label}} <br> {{ form.email }} <br> <br>
                 {% if form.email.errors %}
                     <ul class=errors>
-                        {% for error in form.password.errors %}
-                        <li>{{ error }}</li>
+                        {% for error in form.email.errors %}
+                            {{ error }}
                         {% endfor %}
                     </ul>
                 {% endif %}
