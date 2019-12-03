@@ -470,8 +470,9 @@ def selection():
 
     # goes thru all those bookings and checks if the requested time is between an already existing reservation
     for bk in currBooking:
-        if (bk.booking_startdatetime <= startdt and startdt <= bk.booking_enddatetime) or (
-                endt >= bk.booking_startdatetime and endt <= bk.booking_enddatetime):
+        if (bk.booking_startdatetime < startdt and startdt < bk.booking_enddatetime) or (
+                endt > bk.booking_startdatetime and endt < bk.booking_enddatetime) or (
+                bk.booking_startdatetime == startdt and endt == bk.booking_enddatetime):
             prefSpots.remove(Spot.query.filter_by(spot_id=bk.booking_spot).first())
             print("I get activated :) ")
 
