@@ -340,7 +340,7 @@ def explore():
 @login_required
 def bookings():
     user = current_user
-    bookings = db.session.query(Booking).filter(Booking.booking_user == user.id)
+    bookings = db.session.query(Booking).filter(Booking.booking_user == user.id, Booking.booking_enddatetime >= datetime. now())
     info_list = list()
     for names in bookings:
         sp = db.session.query(Spot).filter(Spot.spot_id == names.booking_spot).first_or_404()
