@@ -257,7 +257,7 @@ def forgotpassword():
 @app.route('/passwordchange/<token>', methods=['GET', 'POST'])
 def passwordchange(token):
     try:
-        email = serial.loads(token, max_age=60)
+        email = serial.loads(token, max_age=3600)
     except SignatureExpired:
         flash('Link is expired')
         return redirect(url_for('login'))
@@ -283,7 +283,7 @@ def passwordchange(token):
 @app.route('/email_confirmation/<token>')
 def email_confirmation(token):
     try:
-        email = serial.loads(token, max_age=60)
+        email = serial.loads(token, max_age=3600)
         flash('Your email has been successfully confirmed')
         try:
             user = User.query.filter_by(email=email).first_or_404()
